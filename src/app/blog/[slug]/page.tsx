@@ -1,16 +1,14 @@
-// src/app/blog/[slug]/page.tsx
 import type { Metadata as NextMetadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/mdx";
 import { formatDate, getBlogPosts } from "@/app/blog/utils";
 import { baseUrl } from "@/app/sitemap";
 
-// Pre-generate static params
+
 export function generateStaticParams() {
     return getBlogPosts().map((p) => ({ slug: p.slug }));
 }
 
-// Next 15 / React 19: params is a Promise — await it here.
 export async function generateMetadata(
     { params }: { params: Promise<{ slug: string }> }
 ): Promise<NextMetadata> {
@@ -38,7 +36,6 @@ export async function generateMetadata(
     };
 }
 
-// The actual page component (default export REQUIRED)
 export default async function BlogPostPage(
     { params }: { params: Promise<{ slug: string }> }
 ) {

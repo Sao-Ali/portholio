@@ -15,16 +15,11 @@ export type PostRecord = {
     content: string
 }
 
-/** Safe frontmatter parser for simple "key: value" lines.
- * Supports quoted values and ignores empty/comment lines.
- * Returns metadata + content. If no frontmatter block, returns empty metadata.
- */
 function parseFrontmatter(fileContent: string): { metadata: Partial<Metadata>; content: string } {
     const fm = /^---\s*\n([\s\S]*?)\n---\s*\n?/
     const match = fileContent.match(fm)
 
     if (!match) {
-        // No frontmatter; return raw content
         return { metadata: {}, content: fileContent.trim() }
     }
 
@@ -35,12 +30,10 @@ function parseFrontmatter(fileContent: string): { metadata: Partial<Metadata>; c
     for (const rawLine of frontMatterBlock.split('\n')) {
         const line = rawLine.trim()
         if (!line || line.startsWith('#')) continue
-        // Split on first ":" only
         const idx = line.indexOf(':')
         if (idx === -1) continue
         const key = line.slice(0, idx).trim()
         let value = line.slice(idx + 1).trim()
-        // Remove surrounding quotes
         value = value.replace(/^['"](.*)['"]$/, '$1')
         metadata[key] = value
     }
@@ -65,7 +58,6 @@ function getMDXData(dir: string): PostRecord[] {
         const { metadata, content } = readMDXFile(abs)
         const slug = path.basename(file, path.extname(file))
 
-        // Basic validation + sensible defaults
         const md = {
             title: String(metadata.title ?? slug),
             publishedAt: String(metadata.publishedAt ?? new Date().toISOString().slice(0, 10)),
@@ -90,20 +82,18 @@ export function getBlogPosts(): PostRecord[] {
     const postsDir = path.join(appDir, 'blog', 'posts')
 
     if (!fs.existsSync(postsDir)) {
-        // You can throw to surface misconfig, or return [] to fail softly.
-        // throw new Error(`Posts directory not found at: ${postsDir}`)
         return []
     }
 
     return getMDXData(postsDir)
 }
 
-/** Formats a date like "September 20, 2025" and optionally adds relative time with accurate diffs. */
+
 export function formatDate(dateInput: string, includeRelative = false): string {
     // Normalize (support YYYY-MM-DD)
     const iso = dateInput.includes('T') ? dateInput : `${dateInput}T00:00:00`
     const date = new Date(iso)
-    const full = date.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    const full = date.toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
 
     if (!includeRelative) return full
 
