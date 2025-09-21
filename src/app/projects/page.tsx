@@ -3,11 +3,7 @@ import { Navbar } from "@/components/navbar";
 
 export default function ProjectsPage() {
     return (
-        <section className="mx-auto max-w-[720px] px-5 sm:px-8 py-12 md:py-16 lg:py-20 text-neutral-900 dark:text-neutral-50">
-            {/* Navbar */}
-            <Navbar />
-
-            {/* Page title */}
+        <section>
             <h1 className="mb-6 text-2xl font-semibold tracking-tighter">Projects</h1>
             <p className="mb-8 text-neutral-700 dark:text-neutral-300">
                 A selection of projects I’ve worked on — spanning research, web apps, and full-stack
