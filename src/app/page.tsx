@@ -16,7 +16,10 @@ export default function Page() {
             <p className="mb-4">
                 I love MMA, Matcha, and my girlfriend.
             </p>
-            <BlogPosts />
+
+            <div className="my-12">
+                <BlogPosts />
+            </div>
 
             <p className="mb-6">
                 <a
@@ -28,9 +31,6 @@ export default function Page() {
                     Check out my Resume here
                 </a>
             </p>
-
-            <div className="my-8">
-            </div>
         </section>
     );
 }

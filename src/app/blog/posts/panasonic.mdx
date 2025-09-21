@@ -1,0 +1,52 @@
+---
+title: "Developing LRU Fault Tools at Panasonic Avionics"
+publishedAt: "2025-09-21"
+summary: "Reflecting on my work at Panasonic Avionics, where I built tools to connect low-level fault data with user-facing systems, exporting reports and streamlining hardware testing."
+---
+
+# Bridging Hardware and Software ✈️💻
+
+At **Panasonic Avionics**, I joined the software engineering team focused on improving how avionics technicians interact with Line Replaceable Unit (LRU) fault data. The challenge was simple to describe but complex to solve: **take raw hardware faults buried deep in C++ logic and turn them into something clear, usable, and portable.**
+
+---
+
+## Connecting C++ to JavaScript
+
+Faults originated in **low-level C++ bindings**, but technicians relied on a **JavaScript-driven interface**. I built the bridge that let fault data move cleanly between those layers.
+
+- **Why this mattered**: without the bridge, engineers had to rely on manual log inspection, which was slow and error-prone.
+- **What I learned**: careful design of the data interface ensured that technicians saw *exactly what the hardware reported* without unnecessary complexity.
+
+This step was critical for real-time visibility: if an aircraft fault occurs, the data pipeline must be accurate and immediate.
+
+---
+
+## Displaying & Exporting Faults
+
+Once the data was accessible, my next task was to make it **useful**:
+
+- **Display**: I integrated the faults into the front-end interface so they could be filtered, sorted, and read at a glance. Clear visualization reduced misdiagnosis time and helped engineers act faster.
+- **Export API**: I designed an API that allowed faults to be exported as structured reports. This meant engineers could review data off-system or archive it for compliance.
+- **Removable devices**: I built detection logic for devices like USB drives so reports could be securely saved in the field.
+
+- **Why this mattered**: exporting transformed the interface from a reactive tool into a proactive workflow. Engineers no longer just *saw* faults — they could take them with them, share them, and plug them into larger analysis pipelines.
+
+---
+
+## Full-Stack Problem Solving
+
+The project required me to operate across the stack:
+
+- **Systems programming**: extending and interpreting C++ bindings safely.
+- **Frontend integration**: rendering live fault data with clarity and responsiveness.
+- **Infrastructure**: building APIs and device-handling logic that had to be resilient in constrained, safety-critical environments.
+
+Each layer had its own challenges — from memory safety on the C++ side to state synchronization in the UI. Working end-to-end taught me to see how *every engineering decision ripples through the system.*
+
+---
+
+## Takeaway ✨
+
+This project sharpened my ability to **bridge software with hardware workflows**. By connecting low-level C++ logic to a modern JavaScript interface, designing APIs for exporting, and handling removable device logic, I learned how thoughtful engineering can shave hours off testing cycles and reduce real-world operational risk.
+
+The broader lesson: **good software isn’t just about making data visible — it’s about making it actionable.** At Panasonic, I saw firsthand how bridging that gap can improve reliability and efficiency in mission-critical systems, and that’s the space I want to keep working in.
