@@ -1,0 +1,91 @@
+---
+title: "Building a DataTable for an HFT Trading GUI"
+publishedAt: "2025-09-22"
+summary: "Documenting the design and implementation of a reusable DataTable component for our HFT senior design project. Exploring why type safety, stable keys, and a div-based layout matter for speed, clarity, and future scalability."
+---
+
+# Starting with the DataTable 📊⚡
+
+As part of our **HFT trading senior design project**, I’ve been building out the GUI. One of the first reusable components we needed was a **DataTable**. This table will be central for multiple panels: the **blotter** (our orders and fills), the **top-of-book snapshot** (market data), and eventually the **order book ladder**.
+
+I’ve had concerns about React being a bottleneck compared to low-level approaches (FPGA, C++), but for the GUI layer, React is fine as long as rendering stays predictable. The real compute happens on the backend. My focus for the front-end is **speed, clarity, and an HFT-style look**.
+
+---
+
+## Why a Generic Table?
+
+The component is **generic over a row type**. Each column definition uses a key from that row type. This enforces compile-time safety: if I define a column for `"price"` but the row doesn’t have that field, the build fails.
+
+**Why this matters**: In trading systems, schemas change constantly. Catching mismatches at compile time prevents “undefined” cells during critical sessions.
+
+---
+
+## Why Require a Stable `id`?
+
+Every row must have an `id`. React uses that as a **stable key** when reconciling DOM updates.
+
+In a blotter where new rows constantly stream in at the top, index-based keys make React think the entire table changed on every insert. That causes wasteful re-renders and visible jank. A stable `id` keeps updates localized.
+
+---
+
+## Why This Column Model?
+
+The column definition is minimal: just **header**, optional **width**, and **alignment**.
+
+- **Width** ensures consistent layouts — timestamps can be fixed-width, prices can stay aligned in neat columns.
+- **Alignment** reduces cognitive load — traders expect prices and quantities to be right-aligned, which makes scanning for changes faster.
+
+This is lean on purpose: an MVP doesn’t need sorting or filtering built in.
+
+---
+
+## Why a Fixed Header + Scrollable Body?
+
+The header is fixed while the body scrolls. Traders rely on labels always being visible while scanning deep lists. By scoping scroll to the body only, the overall page remains locked, which is critical when docking multiple panels side-by-side.
+
+---
+
+## Why Use `<div>`s Instead of `<table>`?
+
+Using `<div>`s with flexbox instead of semantic `<table>` markup is a pragmatic choice:
+
+- Easier to **style consistently** in dark themes.
+- Easier to **virtualize** later when rendering thousands of rows.
+- Easier to **animate**, e.g. flashing cells green/red on updates.
+
+Native tables are rigid once you need sticky headers, depth bars, or animations. Divs keep me in full control.
+
+---
+
+## Why Cast to String and Add Tooltips?
+
+Each cell explicitly casts its value to a string. That guarantees consistent rendering regardless of the underlying type. I also added a tooltip (`title`) for truncated values, balancing **density** with **accessibility**.
+
+---
+
+## Why Control Height Through Props and CSS?
+
+Inline height is only applied if explicitly passed as a prop. Otherwise, CSS dictates layout. This avoids the “inline style wins” trap, keeping the component flexible — it can fill 100% height or 50% width depending on its container.
+
+---
+
+## Why Keep It Stateless?
+
+The table does not handle sorting, filtering, or selection. That’s intentional: for HFT GUIs, the DataTable should be a **dumb fast renderer**. Higher-level logic belongs outside. This makes it predictable and prevents heavy computations from blocking paints.
+
+---
+
+## Trade-offs and Future Work
+
+- **Virtualization** for very large lists.
+- **Change flashes** to highlight updates.
+- **Memory optimization** if GC pressure grows.
+- **Accessibility improvements** with ARIA roles while keeping div flexibility.
+
+---
+
+## Takeaway ✨
+
+This `DataTable` is small, type-safe, and layout-predictable — exactly what’s needed for an MVP HFT trading UI. It’s fast, easy to reason about, and leaves room for performance optimizations when real feeds come online.
+
+Going forward, I’ll layer in virtualization, coalesced paints, and maybe even Canvas for hotspots. For now, this gives us a **solid foundation** for building the rest of the trading interface.
