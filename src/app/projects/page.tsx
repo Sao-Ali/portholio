@@ -1,52 +1,43 @@
-import { ProjectCard } from "@/components/project-card";
-import { Navbar } from "@/components/navbar";
-
 export default function ProjectsPage() {
+    const projects = [
+        {
+            name: "Haskell-Habit",
+            href: "https://github.com/Sao-Ali/haskell-habit-tracker",
+        },
+        {
+            name: "HFT-System",
+            href: "https://github.com/vrushang1234/hft-system",
+        },
+        {
+            name: "SANA Neural Network Aligner",
+            href: "https://github.com/waynebhayes/SANA",
+        },
+        {
+            name: "Engineering Room Booking System",
+            href: "https://ics-259.vercel.app/",
+        },
+    ];
+
     return (
         <section>
             <h1 className="mb-6 text-2xl font-semibold tracking-tighter">Projects</h1>
-            <p className="mb-8 text-neutral-700 dark:text-neutral-300">
-                A selection of projects I’ve worked on — spanning research, web apps, and full-stack
-                engineering initiatives.
-            </p>
 
-            {/* Project cards */}
-            <div className="space-y-6">
-                <ProjectCard
-                    title="Lost in Translation"
-                    description="C++ + embeddings pipeline aligning JP/EN subtitles; Next.js frontend with Palantir AIP integrations."
-                    image="/lost.png"
-                    buttonText="View Project"
-                    buttonLink="https://github.com/Sao-Ali/palantir"
-                />
-                <ProjectCard
-                    title="SANA Neural-Network Aligner"
-                    description="Contributed to the SANA lab by building a modern React + TypeScript web interface for large-scale network alignment."
-                    image="/SANA.png"
-                    buttonText="View Project"
-                    buttonLink="https://hayeslab.ics.uci.edu/"
-                />
-                <ProjectCard
-                    title="Intertale — Indie Film Site"
-                    description="Next.js + Tailwind production site inspired by A24; media library and cinematic landing pages."
-                    image="/intertale.png"
-                    buttonText="View Project"
-                    buttonLink="https://github.com/Sao-Ali/intertale"
-                />
-                <ProjectCard
-                    title="Engineering Student Council — Technical Director"
-                    description="Led development of full-stack applications for 30+ engineering clubs at UCI."
-                    image="/Project 3.png"
-                    buttonText="View Project"
-                    buttonLink="https://esc.eng.uci.edu/"
-                />
-                <ProjectCard
-                    title="Room Booking Calendar"
-                    description="Vanilla React calendar with reservation popup, recurring events, and inline editing."
-                    image="/Project 1.png"
-                    buttonText="View Project"
-                    buttonLink="https://ics-259.vercel.app/"
-                />
+            <div>
+                {projects.map((project) => (
+                    <a
+                        key={project.name}
+                        href={project.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col space-y-1 mb-4 group"
+                    >
+                        <div className="w-full flex flex-col">
+                            <p className="text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:underline">
+                                {project.name}
+                            </p>
+                        </div>
+                    </a>
+                ))}
             </div>
         </section>
     );

@@ -1,0 +1,69 @@
+---
+title: "Haskell Habit Tracker"
+publishedAt: "2026-01-30"
+summary: "Learning Haskell through a habit tracker: functional programming growing pains, cleaner types, and a simple CLI-first workflow inspired by paywalled apps."
+---
+
+# Haskell Habit Tracker
+
+I started this project for a simple reason: most habit trackers I tried were locked behind paywalls, and I wanted something lightweight I could actually own. That turned into a bigger goal: learn Haskell by building a real tool I would use every day.
+
+---
+
+## Why Haskell?
+
+I wanted to push myself into functional programming. Haskell is opinionated and precise, which made it feel like the right place to learn how to model problems clearly. The learning curve was real, but the payoff has been worth it.
+
+- **Pure functions** forced me to be explicit about state and side effects.
+- **Type safety** pushed me to design data structures carefully instead of patching issues later.
+- **Composition** made the code read more like a spec than a script.
+
+---
+
+## The Hard Part: Thinking Functionally
+
+The biggest shift was unlearning the impulse to mutate state. In Haskell, once you accept that data is immutable, the structure of your program changes. I had to plan data flow up front, which felt slower at first, but it reduced the number of bugs I introduced.
+
+It also made me realize how often I lean on runtime checks in other languages. Haskell pushes those checks into compile time, and that mindset has carried over into how I write TypeScript.
+
+---
+
+## How Haskell Made My TypeScript Better
+
+After spending time with Haskell, I started treating TypeScript types as a design tool instead of a quick safety net. I now model data more deliberately, avoid overly broad types, and prefer functions that are predictable and easy to test.
+
+The result is code that feels less fragile. Haskell forced the discipline, and TypeScript benefits from it.
+
+---
+
+## CLI First: Wiring Haskell to the Command Line
+
+I built the habit tracker as a small CLI tool so it could live in my normal flow. The development loop was mostly in **bash**, wiring up scripts that:
+
+- compiled the project,
+- ran the CLI with sample inputs,
+- and validated outputs quickly.
+
+That workflow helped me iterate fast without needing a heavy UI. It also reinforced the idea that good software does not need a big frontend to be useful.
+
+---
+
+## How the Project Came Together
+
+The project started as a response to paywalls, but it quickly became a learning lab. I focused on:
+
+- a simple data model for habits,
+- a CLI interface for quick daily updates,
+- and clear output that made it easy to see progress.
+
+It is not flashy, but it is purposeful. That was the point.
+
+---
+
+## What is Next
+
+I am going to keep pushing on Haskell. There is still a lot to learn, especially around building reliable interfaces between pure logic and real-world inputs. This project is small, but it is a solid base to keep growing from.
+
+If you want the code, it is here:
+
+https://github.com/Sao-Ali/haskell-habit-tracker

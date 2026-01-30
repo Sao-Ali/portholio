@@ -8,14 +8,13 @@ export default function Page() {
             </h1>
 
             <p className="mb-4">
-                Computer Engineering student building at the intersection of software and
-                hardware — with a strong background in software development and a passion
-                for creating critical, impactful systems.
+                Computer Engineering student with a drive to build mission-critical software
+                handling large volumes of data that sits between software and hardware.
             </p>
 
-            <p className="mb-4">
-                I love MMA, Matcha, and my girlfriend.
-            </p>
+            <p className="mb-4">I love MMA and nature.</p>
+
+            <p className="mb-4">Based in OC/LA — open to relocation.</p>
 
             <div className="my-12">
                 <BlogPosts />
