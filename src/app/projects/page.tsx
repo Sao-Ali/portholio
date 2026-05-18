@@ -1,44 +1,27 @@
+import { projects } from "@/lib/portfolio-data";
+
 export default function ProjectsPage() {
-    const projects = [
-        {
-            name: "Haskell-Habit",
-            href: "https://github.com/Sao-Ali/haskell-habit-tracker",
-        },
-        {
-            name: "HFT-System",
-            href: "https://github.com/vrushang1234/hft-system",
-        },
-        {
-            name: "SANA Neural Network Aligner",
-            href: "https://github.com/waynebhayes/SANA",
-        },
-        {
-            name: "Engineering Room Booking System",
-            href: "https://ics-259.vercel.app/",
-        },
-    ];
-
     return (
-        <section>
-            <h1 className="mb-6 text-2xl font-semibold tracking-tighter">Projects</h1>
-
-            <div>
+        <main className="terminal-post">
+            <section className="terminal-post-inner">
+                <p><span className="terminal-user">visitor</span>@<span className="terminal-host">ali-sao.dev</span>:~$ cd projects && ls</p>
+                <h1 className="sr-only">Ali Sao Projects</h1>
+                <div className="terminal-output-block mt-4">
                 {projects.map((project) => (
                     <a
-                        key={project.name}
-                        href={project.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex flex-col space-y-1 mb-4 group"
+                        key={project.title}
+                        href={`/projects/${project.slug}`}
+                        className="terminal-list-item block no-underline"
                     >
-                        <div className="w-full flex flex-col">
-                            <p className="text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:underline">
-                                {project.name}
-                            </p>
-                        </div>
+                        <p><span className="terminal-accent">{project.slug}.md</span></p>
+                        <p>{project.title}</p>
+                        <p className="terminal-muted">{project.desc}</p>
+                        <p className="terminal-dim">{project.stack.join(" / ")}</p>
                     </a>
                 ))}
-            </div>
-        </section>
+                </div>
+                <p className="terminal-muted mt-6">From home: cd projects, ls, vi &lt;file&gt;.</p>
+            </section>
+        </main>
     );
 }

@@ -1,15 +1,34 @@
-import { BlogPosts } from "@/components/posts";
+import Link from "next/link";
+import { formatDate, getBlogPosts } from "@/app/blog/utils";
 
 export const metadata = {
-    title: "Blog",
-    description: "Read my latest blog posts about software, hardware, and projects.",
+    title: "Ali Sao Blog",
+    description: "Terminal-indexed writing about software, hardware, and projects.",
 };
 
 export default function BlogIndexPage() {
+    const posts = getBlogPosts().sort(
+        (a, b) =>
+            new Date(b.metadata.publishedAt).getTime() -
+            new Date(a.metadata.publishedAt).getTime()
+    );
+
     return (
-        <section>
-            <h1 className="mb-8 text-2xl font-semibold tracking-tighter">My Blog</h1>
-            <BlogPosts />
-        </section>
+        <main className="terminal-post">
+            <section className="terminal-post-inner">
+                <p><span className="terminal-user">visitor</span>@<span className="terminal-host">ali-sao.dev</span>:~$ cd blog && ls</p>
+                <h1 className="sr-only">Ali Sao Blog</h1>
+                <div className="terminal-output-block mt-4">
+                    {posts.map((post, index) => (
+                        <Link key={post.slug} href={`/blog/${post.slug}`} className="terminal-list-item block no-underline">
+                            <p><span className="terminal-accent">{post.slug}.mdx</span></p>
+                            <p>{index + 1}. {post.metadata.title}</p>
+                            <p className="terminal-muted">{formatDate(post.metadata.publishedAt)} - {post.metadata.summary}</p>
+                        </Link>
+                    ))}
+                </div>
+                <p className="terminal-muted mt-6">From home: cd blog, ls, vi &lt;file&gt;.</p>
+            </section>
+        </main>
     );
 }

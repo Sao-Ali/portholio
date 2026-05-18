@@ -1,6 +1,7 @@
 import type { Metadata as NextMetadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/mdx";
+import { TerminalReader } from "@/components/terminal-reader";
 import { formatDate, getBlogPosts } from "@/app/blog/utils";
 import { baseUrl } from "@/app/sitemap";
 
@@ -50,7 +51,7 @@ export default async function BlogPostPage(
             `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`;
 
     return (
-        <section>
+        <TerminalReader command={`vi ${slug}.mdx`} cwd="blog">
             <script
                 type="application/ld+json"
                 suppressHydrationWarning
@@ -68,15 +69,15 @@ export default async function BlogPostPage(
                     }),
                 }}
             />
-            <h1 className="text-2xl font-semibold tracking-tighter">{post.metadata.title}</h1>
+            <h1 className="mt-8 text-2xl font-semibold tracking-tighter">{post.metadata.title}</h1>
             <div className="mt-2 mb-8 text-sm">
-                <p className="text-neutral-600 dark:text-neutral-400">
-                    {formatDate(post.metadata.publishedAt)}
+                <p className="terminal-muted">
+                {formatDate(post.metadata.publishedAt)}
                 </p>
             </div>
             <article className="prose dark:prose-invert max-w-none prose-h1:mb-6 prose-h2:mt-10 prose-h2:mb-4 prose-p:mb-5 prose-li:mb-2 leading-relaxed">
                 <CustomMDX source={post.content} />
             </article>
-        </section>
+        </TerminalReader>
     );
 }

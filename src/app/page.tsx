@@ -1,35 +1,13 @@
-import { BlogPosts } from "@/components/posts";
+import { getBlogPosts } from "@/app/blog/utils";
+import { TerminalPortfolio } from "@/components/terminal-portfolio";
 
-export default function Page() {
-    return (
-        <section>
-            <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
-                My Portfolio
-            </h1>
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ restore?: string }>;
+}) {
+  const params = await searchParams;
+  const posts = getBlogPosts().map(({ slug, metadata }) => ({ slug, metadata }));
 
-            <p className="mb-4">
-                Computer Engineering student with a drive to build mission-critical software
-                handling large volumes of data that sits between software and hardware.
-            </p>
-
-            <p className="mb-4">I love MMA and nature.</p>
-
-            <p className="mb-4">Based in OC/LA — open to relocation.</p>
-
-            <div className="my-12">
-                <BlogPosts />
-            </div>
-
-            <p className="mb-6">
-                <a
-                    href="/resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-blue-600 dark:hover:text-blue-400"
-                >
-                    Check out my Resume here
-                </a>
-            </p>
-        </section>
-    );
+  return <TerminalPortfolio posts={posts} skipBoot={params.restore === "1"} />;
 }

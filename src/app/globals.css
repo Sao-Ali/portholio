@@ -130,7 +130,11 @@
 /* ---------- Base layer ---------- */
 @layer base {
   * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground; }
+  body {
+    @apply bg-background text-foreground;
+    background: var(--terminal-bg, var(--background));
+    color: var(--terminal-text, var(--foreground));
+  }
   html { min-width: 360px; }
 }
 
@@ -214,3 +218,389 @@ table {
 
 /* Utilities */
 .title { text-wrap: balance; }
+
+:root,
+:root[data-terminal-theme="dark"] {
+  --terminal-bg: #050505;
+  --terminal-text: #d8d8d8;
+  --terminal-muted: #a8a8a8;
+  --terminal-dim: #737373;
+  --terminal-primary: #33d17a;
+  --terminal-secondary: #8ff0a4;
+  --terminal-border: #202020;
+  --terminal-selection: #33d17a;
+  --terminal-selection-text: #050505;
+}
+
+:root[data-terminal-theme="light"] {
+  --terminal-bg: #f4f7f7;
+  --terminal-text: #20303a;
+  --terminal-muted: #4d6473;
+  --terminal-dim: #7a8c97;
+  --terminal-primary: #007a70;
+  --terminal-secondary: #a15300;
+  --terminal-border: #c9d7dc;
+  --terminal-selection: #007a70;
+  --terminal-selection-text: #ffffff;
+}
+
+:root[data-terminal-theme="blue-matrix"] {
+  --terminal-bg: #090b12;
+  --terminal-text: #eef7ff;
+  --terminal-muted: #a9bed1;
+  --terminal-dim: #6e86a0;
+  --terminal-primary: #50f5ff;
+  --terminal-secondary: #8cffb4;
+  --terminal-border: #20364d;
+  --terminal-selection: #50f5ff;
+  --terminal-selection-text: #071018;
+}
+
+:root[data-terminal-theme="espresso"] {
+  --terminal-bg: #292421;
+  --terminal-text: #f4eee7;
+  --terminal-muted: #cdbfae;
+  --terminal-dim: #928477;
+  --terminal-primary: #f2d06b;
+  --terminal-secondary: #91d37a;
+  --terminal-border: #4b4039;
+  --terminal-selection: #f2d06b;
+  --terminal-selection-text: #201b18;
+}
+
+:root[data-terminal-theme="sao"] {
+  --terminal-bg: #060b0f;
+  --terminal-text: #e7edf2;
+  --terminal-muted: #a8b8c5;
+  --terminal-dim: #738897;
+  --terminal-primary: #67e8f9;
+  --terminal-secondary: #fb7185;
+  --terminal-border: #153342;
+  --terminal-selection: #67e8f9;
+  --terminal-selection-text: #061014;
+}
+
+.terminal-shell {
+  min-height: 100svh;
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.terminal-window {
+  min-height: 100svh;
+  max-width: 980px;
+  padding: 1rem;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+@media (min-width: 640px) {
+  .terminal-window {
+    padding: 1.5rem;
+  }
+}
+
+.terminal-entry {
+  margin-bottom: 1rem;
+}
+
+.terminal-pinned-welcome {
+  margin-bottom: 1.25rem;
+}
+
+.terminal-pinned-welcome .terminal-ascii {
+  font-size: clamp(0.42rem, 1.35vw, 0.82rem);
+}
+
+.terminal-command-line,
+.terminal-form {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  max-width: 100%;
+}
+
+.terminal-form {
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 0.25rem;
+  background: var(--terminal-bg);
+}
+
+.terminal-form input {
+  min-width: 0;
+  flex: 1;
+  background: transparent;
+  color: var(--terminal-text);
+  caret-color: var(--terminal-primary);
+  outline: none;
+}
+
+.terminal-form label,
+.terminal-command-line {
+  overflow-wrap: anywhere;
+}
+
+.terminal-response {
+  margin-top: 0.35rem;
+  padding-left: 0;
+}
+
+.terminal-output-block {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.terminal-list-item {
+  margin: 0.35rem 0 0.85rem;
+  max-width: 760px;
+}
+
+.terminal-ascii {
+  color: var(--terminal-primary);
+  font-size: clamp(0.56rem, 1.8vw, 0.95rem);
+  line-height: 1.1;
+  overflow: hidden;
+  white-space: pre;
+}
+
+.terminal-prompt {
+  white-space: nowrap;
+}
+
+.terminal-user,
+.terminal-accent {
+  color: var(--terminal-primary);
+}
+
+.terminal-strong {
+  color: var(--terminal-text);
+  font-weight: 800;
+}
+
+.terminal-host {
+  color: var(--terminal-secondary);
+}
+
+.terminal-muted {
+  color: var(--terminal-muted);
+}
+
+.terminal-dim {
+  color: var(--terminal-dim);
+}
+
+.terminal-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0.5rem 0 0.75rem;
+  color: var(--terminal-muted);
+}
+
+.terminal-help-keys {
+  margin-top: 0.8rem;
+}
+
+.terminal-help-group {
+  margin-top: 0.85rem;
+}
+
+.terminal-file-list {
+  grid-template-columns: repeat(auto-fit, minmax(11rem, max-content));
+  gap: 0.25rem 1.5rem;
+}
+
+.terminal-boot .terminal-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.terminal-scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 5px,
+    color-mix(in srgb, var(--terminal-primary) 6%, transparent) 6px
+  );
+  opacity: 0.35;
+}
+
+.terminal-cursor-line {
+  margin-top: 1rem;
+  animation: terminal-blink 1s steps(2, start) infinite;
+}
+
+.terminal-post {
+  min-height: 100svh;
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  padding: 1rem;
+}
+
+.terminal-post-inner {
+  max-width: 820px;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 640px) {
+  .terminal-post {
+    padding: 1.5rem;
+  }
+}
+
+.terminal-post a {
+  color: var(--terminal-secondary);
+}
+
+.terminal-link {
+  color: var(--terminal-secondary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.terminal-post .prose {
+  color: var(--terminal-text);
+}
+
+.terminal-post .prose :where(h1, h2, h3, h4, strong) {
+  color: var(--terminal-text);
+}
+
+.terminal-post .prose :where(p, li) {
+  color: var(--terminal-muted);
+}
+
+.terminal-post .prose pre {
+  background: color-mix(in srgb, var(--terminal-border) 35%, var(--terminal-bg));
+  border-color: var(--terminal-border);
+}
+
+.terminal-resume {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.6rem;
+  max-width: 820px;
+}
+
+.terminal-resume h1 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--terminal-text);
+}
+
+.terminal-resume h2 {
+  color: var(--terminal-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.terminal-resume section {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.terminal-resume-item {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.terminal-resume ul {
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+  color: var(--terminal-muted);
+}
+
+.terminal-resume li::before {
+  content: "- ";
+  color: var(--terminal-primary);
+}
+
+.terminal-reader-command {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: auto minmax(4rem, 16rem) 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  border-top: 1px solid var(--terminal-border);
+  background: color-mix(in srgb, var(--terminal-bg) 92%, black);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.terminal-reader-command input {
+  background: transparent;
+  color: var(--terminal-text);
+  caret-color: var(--terminal-primary);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .terminal-reader-command {
+    grid-template-columns: auto 1fr;
+  }
+
+  .terminal-reader-command .terminal-muted {
+    grid-column: 1 / -1;
+  }
+}
+
+@keyframes terminal-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+::selection {
+  background-color: var(--terminal-selection);
+  color: var(--terminal-selection-text);
+}
+
+.classic-shell {
+  min-height: 100svh;
+  background: #0a0a0a;
+  color: #fafafa;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.classic-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 5rem;
+}
+
+@media (min-width: 640px) {
+  .classic-container {
+    padding: 4rem 2rem 5rem;
+  }
+}
+
+.classic-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin: 0 0 3rem -0.5rem;
+}
+
+.classic-nav a {
+  padding: 0.25rem 0.5rem;
+  color: #d4d4d4;
+  transition: color 160ms ease;
+}
+
+.classic-nav a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
