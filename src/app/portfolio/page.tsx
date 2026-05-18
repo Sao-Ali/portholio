@@ -9,13 +9,13 @@ import {
 } from "@/lib/portfolio-data";
 
 export const metadata = {
-  title: "Portfolio PDF | Ali Sao",
-  description: "Ali Sao portfolio and resume PDF.",
+  title: "Resume PDF | Ali Sao",
+  description: "Ali Sao resume PDF.",
 };
 
 export default function PortfolioPdfPage() {
   return (
-    <TerminalReader command="vi portfolio.pdf">
+    <TerminalReader command="vi resume.pdf">
       <article className="terminal-resume">
         <header>
           <h1>Ali Sao</h1>

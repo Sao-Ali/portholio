@@ -41,7 +41,6 @@ const commands: Command[] = [
   { cmd: "vi", desc: "open a file, then :q returns here" },
   { cmd: "blog", desc: "simple alias: list blog files" },
   { cmd: "projects", desc: "simple alias: list project files" },
-  { cmd: "portfolio", desc: "simple alias: open portfolio.pdf" },
   { cmd: "resume", desc: "simple alias: open resume.pdf" },
   { cmd: "about", desc: "show who Ali is" },
   { cmd: "socials", desc: "list social links" },
@@ -76,7 +75,6 @@ const commandGroups: CommandGroup[] = [
       { cmd: "about", desc: "show who Ali is" },
       { cmd: "blog", desc: "list blog files" },
       { cmd: "projects", desc: "list project files" },
-      { cmd: "portfolio", desc: "open portfolio.pdf" },
       { cmd: "resume", desc: "open resume.pdf" },
       { cmd: "socials", desc: "list social links" },
       { cmd: "email", desc: "open email" },
@@ -287,7 +285,7 @@ export function TerminalPortfolio({
     (dir: Directory) => {
       if (dir === "blog") return sortedPosts.map(post => fileNameForPost(post.slug));
       if (dir === "projects") return projects.map(project => fileNameForProject(project.slug));
-      return ["blog/", "projects/", "portfolio.pdf", "resume.pdf", "about.txt", "socials.txt"];
+      return ["blog/", "projects/", "resume.pdf", "about.txt", "socials.txt"];
     },
     [sortedPosts]
   );
@@ -310,8 +308,8 @@ export function TerminalPortfolio({
       );
       if (project) return { type: "project" as const, url: project.url, label: `projects/${fileNameForProject(project.slug)}` };
 
-      if (["resume", "resume.pdf", "portfolio.pdf", "portfolio"].includes(cleanTarget)) {
-        return { type: "pdf" as const, url: profile.resumeUrl, label: cleanTarget.startsWith("resume") ? "resume.pdf" : "portfolio.pdf" };
+      if (["resume", "resume.pdf"].includes(cleanTarget)) {
+        return { type: "pdf" as const, url: profile.resumeUrl, label: "resume.pdf" };
       }
 
       if (["about.txt", "about"].includes(cleanTarget)) {
@@ -382,7 +380,7 @@ export function TerminalPortfolio({
       }
     }
 
-    if ((cmd === "resume" || cmd === "portfolio") && args.length === 0) {
+    if (cmd === "resume" && args.length === 0) {
       saveSession(session);
       openUrl("/portfolio", "_self");
     }
@@ -596,9 +594,9 @@ export function TerminalPortfolio({
       if (args.length) return <Usage>projects</Usage>;
       return renderProjectList();
     }
-    if (cmd === "portfolio" || cmd === "resume") {
+    if (cmd === "resume") {
       if (args.length) return <Usage>{cmd}</Usage>;
-      return <div>Opening {cmd === "portfolio" ? "portfolio.pdf" : "resume.pdf"}... type :q to return.</div>;
+      return <div>Opening resume.pdf... type :q to return.</div>;
     }
     if (cmd === "about") {
       if (args.length) return <Usage>about</Usage>;
