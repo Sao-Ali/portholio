@@ -1,12 +1,11 @@
+import { TerminalReader } from "@/components/terminal-reader";
 import { projects } from "@/lib/portfolio-data";
 
 export default function ProjectsPage() {
     return (
-        <main className="terminal-post">
-            <section className="terminal-post-inner">
-                <p><span className="terminal-user">visitor</span>@<span className="terminal-host">ali-sao.dev</span>:~$ cd projects && ls</p>
-                <h1 className="sr-only">Ali Sao Projects</h1>
-                <div className="terminal-output-block mt-4">
+        <TerminalReader command="vi projects">
+            <h1 className="sr-only">Ali Sao Projects</h1>
+            <div className="terminal-output-block mt-4">
                 {projects.map((project) => (
                     <a
                         key={project.title}
@@ -19,9 +18,8 @@ export default function ProjectsPage() {
                         <p className="terminal-dim">{project.stack.join(" / ")}</p>
                     </a>
                 ))}
-                </div>
-                <p className="terminal-muted mt-6">From home: cd projects, ls, vi &lt;file&gt;.</p>
-            </section>
-        </main>
+            </div>
+            <p className="terminal-muted mt-6">From home: cd projects, ls, vi &lt;file&gt;.</p>
+        </TerminalReader>
     );
 }

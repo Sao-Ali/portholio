@@ -39,9 +39,9 @@ const commands: Command[] = [
   { cmd: "ls", desc: "list files in the current directory" },
   { cmd: "cd", desc: "change directory" },
   { cmd: "vi", desc: "open a file, then :q returns here" },
-  { cmd: "blog", desc: "simple alias: list blog files" },
-  { cmd: "projects", desc: "simple alias: list project files" },
-  { cmd: "resume", desc: "simple alias: open resume.pdf" },
+  { cmd: "blog", desc: "open blog index" },
+  { cmd: "projects", desc: "open project index" },
+  { cmd: "resume", desc: "open resume.pdf" },
   { cmd: "about", desc: "show who Ali is" },
   { cmd: "socials", desc: "list social links" },
   { cmd: "email", desc: "open email" },
@@ -73,8 +73,8 @@ const commandGroups: CommandGroup[] = [
     title: "portfolio shortcuts",
     commands: [
       { cmd: "about", desc: "show who Ali is" },
-      { cmd: "blog", desc: "list blog files" },
-      { cmd: "projects", desc: "list project files" },
+      { cmd: "blog", desc: "open blog index" },
+      { cmd: "projects", desc: "open project index" },
       { cmd: "resume", desc: "open resume.pdf" },
       { cmd: "socials", desc: "list social links" },
       { cmd: "email", desc: "open email" },
@@ -177,7 +177,7 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
     () => [
       "ssh visitor@ali-sao.dev",
       "resolving ali-sao.dev...",
-      "handshake: software <-> hardware channel established",
+      "handshake: software + hardware",
       "mounting /home/ali-sao/portfolio",
       "indexing blog/*.mdx",
       "indexing projects/*.md",
@@ -300,13 +300,23 @@ export function TerminalPortfolio({
       );
       if (post) return { type: "blog" as const, url: `/blog/${post.slug}`, label: `blog/${fileNameForPost(post.slug)}` };
 
+      if (cleanTarget === "blog") {
+        return { type: "route" as const, url: "/blog", label: "blog/" };
+      }
+
+      if (cleanTarget === "projects") {
+        return { type: "route" as const, url: "/projects", label: "projects/" };
+      }
+
       const project = projects.find(
         item =>
           path === `projects/${fileNameForProject(item.slug)}` ||
           path === `projects/${item.slug}` ||
           cleanTarget === item.slug
       );
-      if (project) return { type: "project" as const, url: project.url, label: `projects/${fileNameForProject(project.slug)}` };
+      if (project) {
+        return { type: "project" as const, url: `/projects/${project.slug}`, label: `projects/${fileNameForProject(project.slug)}` };
+      }
 
       if (["resume", "resume.pdf"].includes(cleanTarget)) {
         return { type: "pdf" as const, url: profile.resumeUrl, label: "resume.pdf" };
@@ -371,18 +381,25 @@ export function TerminalPortfolio({
 
     if (cmd === "vi" && args.length === 1) {
       const readable = resolveReadable(args[0], cwd);
-      if (readable?.type === "blog" || readable?.type === "pdf") {
+      if (readable && ["blog", "pdf", "project", "route"].includes(readable.type)) {
         saveSession(session);
         openUrl(readable.url, readable.type === "pdf" ? "_blank" : "_self");
-      }
-      if (readable?.type === "project") {
-        openUrl(readable.url);
       }
     }
 
     if (cmd === "resume" && args.length === 0) {
       saveSession(session);
-      openUrl("/portfolio", "_self");
+      openUrl(profile.resumeUrl, "_blank");
+    }
+
+    if (cmd === "blog" && args.length === 0) {
+      saveSession(session);
+      openUrl("/blog", "_self");
+    }
+
+    if (cmd === "projects" && args.length === 0) {
+      saveSession(session);
+      openUrl("/projects", "_self");
     }
 
     if (cmd === "email" && args.length === 0) {
@@ -432,7 +449,7 @@ export function TerminalPortfolio({
 
     if (cmd === "vi" && (hasTrailingSpace || args.length === 1)) {
       const partial = hasTrailingSpace ? "" : args[0] ?? "";
-      const files = listEntries(cwd).filter(entry => !entry.endsWith("/"));
+      const files = listEntries(cwd).map(entry => entry.replace(/\/$/, ""));
       const matches = files.filter(file => file.startsWith(partial));
       if (matches.length === 1) setInput(`vi ${matches[0]}`);
       else setHints(matches);
@@ -507,31 +524,6 @@ export function TerminalPortfolio({
     </div>
   );
 
-  const renderBlogList = () => (
-    <div className="terminal-output-block">
-      <p className="terminal-muted">Directory view: cd blog, ls, vi &lt;file&gt;</p>
-      {sortedPosts.map(post => (
-        <div className="terminal-list-item" key={post.slug}>
-          <p><span className="terminal-accent">{fileNameForPost(post.slug)}</span></p>
-          <p className="terminal-muted">{post.metadata.publishedAt} - {post.metadata.summary}</p>
-        </div>
-      ))}
-    </div>
-  );
-
-  const renderProjectList = () => (
-    <div className="terminal-output-block">
-      <p className="terminal-muted">Directory view: cd projects, ls, vi &lt;file&gt;</p>
-      {projects.map(project => (
-        <div className="terminal-list-item" key={project.slug}>
-          <p><span className="terminal-accent">{fileNameForProject(project.slug)}</span></p>
-          <p className="terminal-muted">{project.desc}</p>
-          <p className="terminal-dim">{project.stack.join(" / ")}</p>
-        </div>
-      ))}
-    </div>
-  );
-
   const renderOutput = (raw: string, index: number) => {
     if (!raw) return <div className="terminal-muted"> </div>;
     const { cmd, args } = parseInput(raw);
@@ -582,21 +574,22 @@ export function TerminalPortfolio({
           </div>
         );
       }
-      if (readable.type === "project") return <div>Opening GitHub for {readable.label}...</div>;
+      if (readable.type === "route") return <div>Opening {readable.label}... type :q to return.</div>;
+      if (readable.type === "project") return <div>Opening {readable.label}... type :q to return.</div>;
       if (readable.type === "pdf") return <div>Opening {readable.label} in a new tab...</div>;
       return <div>Opening {readable.label}... type :q to return.</div>;
     }
     if (cmd === "blog") {
       if (args.length) return <Usage>blog</Usage>;
-      return renderBlogList();
+      return <div>Opening blog/... type :q to return.</div>;
     }
     if (cmd === "projects") {
       if (args.length) return <Usage>projects</Usage>;
-      return renderProjectList();
+      return <div>Opening projects/... type :q to return.</div>;
     }
     if (cmd === "resume") {
       if (args.length) return <Usage>{cmd}</Usage>;
-      return <div>Opening resume.pdf... type :q to return.</div>;
+      return <div>Opening resume.pdf in a new tab...</div>;
     }
     if (cmd === "about") {
       if (args.length) return <Usage>about</Usage>;

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatDate, getBlogPosts } from "@/app/blog/utils";
+import { TerminalReader } from "@/components/terminal-reader";
 
 export const metadata = {
     title: "Ali Sao Blog",
@@ -14,21 +15,18 @@ export default function BlogIndexPage() {
     );
 
     return (
-        <main className="terminal-post">
-            <section className="terminal-post-inner">
-                <p><span className="terminal-user">visitor</span>@<span className="terminal-host">ali-sao.dev</span>:~$ cd blog && ls</p>
-                <h1 className="sr-only">Ali Sao Blog</h1>
-                <div className="terminal-output-block mt-4">
-                    {posts.map((post, index) => (
-                        <Link key={post.slug} href={`/blog/${post.slug}`} className="terminal-list-item block no-underline">
-                            <p><span className="terminal-accent">{post.slug}.mdx</span></p>
-                            <p>{index + 1}. {post.metadata.title}</p>
-                            <p className="terminal-muted">{formatDate(post.metadata.publishedAt)} - {post.metadata.summary}</p>
-                        </Link>
-                    ))}
-                </div>
-                <p className="terminal-muted mt-6">From home: cd blog, ls, vi &lt;file&gt;.</p>
-            </section>
-        </main>
+        <TerminalReader command="vi blog">
+            <h1 className="sr-only">Ali Sao Blog</h1>
+            <div className="terminal-output-block mt-4">
+                {posts.map((post, index) => (
+                    <Link key={post.slug} href={`/blog/${post.slug}`} className="terminal-list-item block no-underline">
+                        <p><span className="terminal-accent">{post.slug}.mdx</span></p>
+                        <p>{index + 1}. {post.metadata.title}</p>
+                        <p className="terminal-muted">{formatDate(post.metadata.publishedAt)} - {post.metadata.summary}</p>
+                    </Link>
+                ))}
+            </div>
+            <p className="terminal-muted mt-6">From home: cd blog, ls, vi &lt;file&gt;.</p>
+        </TerminalReader>
     );
 }
