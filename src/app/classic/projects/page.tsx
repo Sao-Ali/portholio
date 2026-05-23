@@ -1,6 +1,6 @@
 import { ClassicNav } from "@/components/classic-nav";
 import Footer from "@/components/footer";
-import { projects } from "@/lib/portfolio-data";
+import { getProjects } from "@/lib/content/portfolio";
 
 export const metadata = {
   title: "Classic Projects | Ali Sao",
@@ -8,6 +8,8 @@ export const metadata = {
 };
 
 export default function ClassicProjectsPage() {
+  const projects = getProjects();
+
   return (
     <main className="classic-shell">
       <div className="classic-container">
@@ -34,6 +36,13 @@ export default function ClassicProjectsPage() {
                 <p className="mt-2 text-sm text-neutral-500">
                   {project.stack.join(" / ")}
                 </p>
+                {project.highlights?.length ? (
+                  <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-neutral-400">
+                    {project.highlights.map(highlight => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                ) : null}
               </a>
             ))}
           </div>

@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TerminalReader } from "@/components/terminal-reader";
-import { projects } from "@/lib/portfolio-data";
+import { getProjectBySlug, getProjects } from "@/lib/content/portfolio";
 
 export function generateStaticParams() {
-  return projects.map(project => ({ slug: project.slug }));
+  return getProjects().map(project => ({ slug: project.slug }));
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params;
-  const project = projects.find(item => item.slug === slug);
+  const project = getProjectBySlug(slug);
   if (!project) return {};
 
   return {
@@ -24,7 +24,7 @@ export default async function ProjectFilePage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const project = projects.find(item => item.slug === slug);
+  const project = getProjectBySlug(slug);
   if (!project) return notFound();
 
   return (
@@ -43,6 +43,14 @@ export default async function ProjectFilePage(
             {project.url}
           </a>
         </p>
+        {project.highlights?.length ? (
+          <div className="mt-4">
+            <p className="terminal-accent">highlights</p>
+            {project.highlights.map(highlight => (
+              <p className="terminal-muted" key={highlight}>- {highlight}</p>
+            ))}
+          </div>
+        ) : null}
       </div>
     </TerminalReader>
   );

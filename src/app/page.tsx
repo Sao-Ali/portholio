@@ -1,5 +1,6 @@
-import { getBlogPosts } from "@/app/blog/utils";
 import { TerminalPortfolio } from "@/components/terminal-portfolio";
+import { getPortfolioContent } from "@/lib/content/portfolio";
+import { getBlogPostSummaries } from "@/lib/content/posts";
 
 export default async function Page({
   searchParams,
@@ -7,7 +8,8 @@ export default async function Page({
   searchParams: Promise<{ restore?: string }>;
 }) {
   const params = await searchParams;
-  const posts = getBlogPosts().map(({ slug, metadata }) => ({ slug, metadata }));
+  const posts = getBlogPostSummaries();
+  const portfolio = getPortfolioContent();
 
-  return <TerminalPortfolio posts={posts} skipBoot={params.restore === "1"} />;
+  return <TerminalPortfolio posts={posts} portfolio={portfolio} skipBoot={params.restore === "1"} />;
 }

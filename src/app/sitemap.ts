@@ -1,21 +1,23 @@
-import { getBlogPosts } from '@/app/blog/utils'
-import { projects } from '@/lib/portfolio-data'
+import { getProjects } from '@/lib/content/portfolio'
+import { getBlogPostSummaries } from '@/lib/content/posts'
 
 // TODO: replace with the production portfolio domain when it is available.
 export const baseUrl = 'https://sao-ali.github.io/portholio'
 
 export default async function sitemap() {
-    const blogs = getBlogPosts().map((post) => ({
+    const posts = getBlogPostSummaries()
+
+    const blogs = posts.map((post) => ({
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: post.metadata.publishedAt,
     }))
 
-    const classicBlogs = getBlogPosts().map((post) => ({
+    const classicBlogs = posts.map((post) => ({
         url: `${baseUrl}/classic/blog/${post.slug}`,
         lastModified: post.metadata.publishedAt,
     }))
 
-    const projectRoutes = projects.map(project => ({
+    const projectRoutes = getProjects().map(project => ({
         url: `${baseUrl}/projects/${project.slug}`,
         lastModified: new Date().toISOString().split('T')[0],
     }))

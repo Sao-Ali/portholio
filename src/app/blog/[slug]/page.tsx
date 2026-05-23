@@ -2,8 +2,8 @@ import type { Metadata as NextMetadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/mdx";
 import { TerminalReader } from "@/components/terminal-reader";
-import { formatDate, getBlogPosts } from "@/app/blog/utils";
 import { baseUrl } from "@/app/sitemap";
+import { formatDate, getBlogPostBySlug, getBlogPosts } from "@/lib/content/posts";
 
 
 export function generateStaticParams() {
@@ -14,7 +14,7 @@ export async function generateMetadata(
     { params }: { params: Promise<{ slug: string }> }
 ): Promise<NextMetadata> {
     const { slug } = await params;
-    const post = getBlogPosts().find((p) => p.slug === slug);
+    const post = getBlogPostBySlug(slug);
     if (!post) return {};
 
     const { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
@@ -41,7 +41,7 @@ export default async function BlogPostPage(
     { params }: { params: Promise<{ slug: string }> }
 ) {
     const { slug } = await params;
-    const post = getBlogPosts().find((p) => p.slug === slug);
+    const post = getBlogPostBySlug(slug);
     if (!post) return notFound();
 
     const ogForSchema =

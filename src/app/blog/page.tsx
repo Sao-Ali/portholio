@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { formatDate, getBlogPosts } from "@/app/blog/utils";
 import { TerminalReader } from "@/components/terminal-reader";
+import { formatDate, getSortedBlogPosts } from "@/lib/content/posts";
 
 export const metadata = {
     title: "Ali Sao Blog",
@@ -8,11 +8,7 @@ export const metadata = {
 };
 
 export default function BlogIndexPage() {
-    const posts = getBlogPosts().sort(
-        (a, b) =>
-            new Date(b.metadata.publishedAt).getTime() -
-            new Date(a.metadata.publishedAt).getTime()
-    );
+    const posts = getSortedBlogPosts();
 
     return (
         <TerminalReader command="vi blog">

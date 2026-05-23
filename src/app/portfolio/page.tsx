@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { profile } from "@/lib/portfolio-data";
+import { getProfile } from "@/lib/content/portfolio";
 
 export const metadata = {
   title: "Resume PDF | Ali Sao",
@@ -7,5 +7,7 @@ export const metadata = {
 };
 
 export default function PortfolioPdfPage() {
+  const profile = getProfile();
+
   redirect(profile.resumeUrl);
 }

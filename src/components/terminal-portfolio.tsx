@@ -1,19 +1,11 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { Metadata } from "@/app/blog/utils";
-import {
-  education,
-  experience,
-  profile,
-  projects,
-  skills,
-  socials,
-} from "@/lib/portfolio-data";
+import type { BlogMetadata, PortfolioContent, Profile } from "@/lib/content/schema";
 
 type BlogPostSummary = {
   slug: string;
-  metadata: Metadata;
+  metadata: BlogMetadata;
 };
 
 type Command = {
@@ -119,16 +111,16 @@ function directoryPath(cwd: Directory) {
   return cwd === "~" ? "" : `/${cwd}`;
 }
 
-function Prompt({ cwd }: { cwd: Directory }) {
+function Prompt({ cwd, promptHost }: { cwd: Directory; promptHost: string }) {
   return (
     <span className="terminal-prompt">
       <span className="terminal-user">visitor</span>@
-      <span className="terminal-host">{profile.promptHost}{directoryPath(cwd)}</span>:~$
+      <span className="terminal-host">{promptHost}{directoryPath(cwd)}</span>:~$
     </span>
   );
 }
 
-function WelcomeOutput() {
+function WelcomeOutput({ profile }: { profile: Profile }) {
   return (
     <div className="terminal-output-block">
       <pre className="terminal-ascii" aria-hidden="true">{`
@@ -164,10 +156,10 @@ function WelcomeOutput() {
   );
 }
 
-function PinnedWelcome() {
+function PinnedWelcome({ profile }: { profile: Profile }) {
   return (
     <header className="terminal-pinned-welcome">
-      <WelcomeOutput />
+      <WelcomeOutput profile={profile} />
     </header>
   );
 }
@@ -240,11 +232,14 @@ function parseStoredSession(session: string | null): TerminalSession | null {
 
 export function TerminalPortfolio({
   posts,
+  portfolio,
   skipBoot = false,
 }: {
   posts: BlogPostSummary[];
+  portfolio: PortfolioContent;
   skipBoot?: boolean;
 }) {
+  const { education, experience, profile, projects, skills, socials } = portfolio;
   const restoredSession = useMemo(
     () =>
       skipBoot && typeof window !== "undefined"
@@ -287,7 +282,7 @@ export function TerminalPortfolio({
       if (dir === "projects") return projects.map(project => fileNameForProject(project.slug));
       return ["blog/", "projects/", "resume.pdf", "about.txt", "socials.txt"];
     },
-    [sortedPosts]
+    [projects, sortedPosts]
   );
 
   const resolveReadable = useCallback(
@@ -332,7 +327,7 @@ export function TerminalPortfolio({
 
       return null;
     },
-    [sortedPosts]
+    [profile.resumeUrl, projects, sortedPosts]
   );
 
   useEffect(() => {
@@ -533,7 +528,7 @@ export function TerminalPortfolio({
       return <div>command not found: {raw}</div>;
     }
 
-    if (cmd === "welcome") return <WelcomeOutput />;
+    if (cmd === "welcome") return <WelcomeOutput profile={profile} />;
     if (cmd === "ls") {
       if (args.length) return <Usage>ls</Usage>;
       return renderDirectoryList(commandCwd);
@@ -696,11 +691,11 @@ export function TerminalPortfolio({
     <main className="terminal-shell" aria-label="Ali Sao terminal portfolio">
       <h1 className="sr-only">Ali Sao Terminal Portfolio</h1>
       <div className="terminal-window">
-        <PinnedWelcome />
+      <PinnedWelcome profile={profile} />
         {history.map((item, index) => (
           <div className="terminal-entry" key={`${item}-${index}`}>
             <div className="terminal-command-line">
-              <Prompt cwd={cwdHistory[index] ?? "~"} /> <span>{item}</span>
+              <Prompt cwd={cwdHistory[index] ?? "~"} promptHost={profile.promptHost} /> <span>{item}</span>
             </div>
             <div className="terminal-response">{renderOutput(item, index)}</div>
           </div>
@@ -717,7 +712,7 @@ export function TerminalPortfolio({
             submitCommand(input);
           }}
         >
-          <label htmlFor="terminal-input"><Prompt cwd={cwd} /></label>
+          <label htmlFor="terminal-input"><Prompt cwd={cwd} promptHost={profile.promptHost} /></label>
           <input
             id="terminal-input"
             ref={inputRef}

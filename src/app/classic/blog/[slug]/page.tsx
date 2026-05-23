@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/mdx";
 import { ClassicNav } from "@/components/classic-nav";
 import Footer from "@/components/footer";
-import { formatDate, getBlogPosts } from "@/app/blog/utils";
 import { baseUrl } from "@/app/sitemap";
+import { formatDate, getBlogPostBySlug, getBlogPosts } from "@/lib/content/posts";
 
 export function generateStaticParams() {
   return getBlogPosts().map(post => ({ slug: post.slug }));
@@ -14,7 +14,7 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<NextMetadata> {
   const { slug } = await params;
-  const post = getBlogPosts().find(item => item.slug === slug);
+  const post = getBlogPostBySlug(slug);
   if (!post) return {};
 
   return {
@@ -34,7 +34,7 @@ export default async function ClassicBlogPostPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const post = getBlogPosts().find(item => item.slug === slug);
+  const post = getBlogPostBySlug(slug);
   if (!post) return notFound();
 
   return (

@@ -1,7 +1,9 @@
 import { TerminalReader } from "@/components/terminal-reader";
-import { projects } from "@/lib/portfolio-data";
+import { getProjects } from "@/lib/content/portfolio";
 
 export default function ProjectsPage() {
+    const projects = getProjects();
+
     return (
         <TerminalReader command="vi projects">
             <h1 className="sr-only">Ali Sao Projects</h1>

@@ -1,29 +1,6 @@
-export type Project = {
-  id: number;
-  slug: string;
-  title: string;
-  desc: string;
-  stack: string[];
-  url: string;
-};
+import type { Education, Experience, Profile, Project, Social } from "@/lib/content/schema";
 
-export type Social = {
-  id: number;
-  title: string;
-  url: string;
-};
-
-export type Experience = {
-  role: string;
-  company: string;
-  period: string;
-  highlights: string[];
-};
-
-export type Education = {
-  title: string;
-  desc: string;
-};
+export type { Education, Experience, Profile, Project, Social } from "@/lib/content/schema";
 
 export const projects: Project[] = [
   {
@@ -57,6 +34,37 @@ export const projects: Project[] = [
     desc: "A booking system for engineering rooms, built as a practical web app for scheduling shared resources.",
     stack: ["Next.js", "TypeScript", "Web App"],
     url: "https://ics-259.vercel.app/",
+  },
+  {
+    id: 5,
+    slug: "radar-console",
+    title: "Radar Console",
+    desc: "A real-time radar simulation and tracking console with a Haskell DSP backend and React/TypeScript operator UI.",
+    stack: ["Haskell", "React", "TypeScript", "WebSockets", "DSP"],
+    url: "https://github.com/Sao-Ali/radar-console",
+    highlights: [
+      "Built a Haskell backend that generates synthetic radar range profiles, performs signal detection, tracks moving targets, and streams live results to the UI.",
+      "Implemented DSP-style signal processing with Gaussian target-return simulation, dB range profiles, median noise-floor estimation, local peak detection, SNR filtering, and range-bin mapping.",
+      "Developed 1D and 2D tracking with nearest-neighbor association, distance gating, lifecycle management, alpha-beta filtering, and velocity estimation.",
+      "Simulated classified targets such as drones, planes, and birds with synthetic motion models, measurement noise, amplitude/SNR signatures, and mock classification confidence.",
+      "Designed a JSON WebSocket protocol with Haskell aeson, websockets, and STM for live/replay modes, health messages, detections, and track updates.",
+      "Built the React, TypeScript, Vite, and Canvas radar scope to visualize detections, tracks, classes, SNR, speed, latency, and system status.",
+    ],
+  },
+  {
+    id: 6,
+    slug: "signaldeck",
+    title: "SignalDeck",
+    desc: "A Haskell-powered terminal telemetry dashboard that validates numeric streams and renders live metrics with sparklines.",
+    stack: ["Haskell", "Cabal", "Brick", "Vty", "Nix"],
+    url: "https://github.com/Sao-Ali/SignalDeck",
+    highlights: [
+      "Built a terminal telemetry dashboard that ingests numeric metric streams from files, stdin pipelines, or live demo sources.",
+      "Implemented rolling-window state management to track recent samples, current value, average value, invalid rows, and blank rows.",
+      "Rendered lightweight terminal visualizations, including Unicode sparklines for real-time trend monitoring.",
+      "Developed an interactive TUI using Brick and Vty with pause/resume controls, keyboard input handling, and live updating telemetry.",
+      "Separated pure data-processing logic from IO/rendering code and added tests for parsing, validation, rolling windows, and display output.",
+    ],
   },
 ];
 
@@ -121,7 +129,7 @@ export const education: Education[] = [
   },
 ];
 
-export const profile = {
+export const profile: Profile = {
   name: "Ali Sao",
   email: "asao1@uci.edu",
   location: "OC/LA",
