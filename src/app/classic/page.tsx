@@ -1,6 +1,7 @@
 import { ClassicBlogPosts } from "@/components/classic-posts";
 import { ClassicNav } from "@/components/classic-nav";
 import Footer from "@/components/footer";
+import { profile } from "@/lib/portfolio-data";
 
 export const metadata = {
   title: "Classic Portfolio | Ali Sao",
@@ -39,7 +40,7 @@ export default function ClassicPage() {
 
           <p className="mb-6">
             <a
-              href="/resume.pdf"
+              href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:text-neutral-900 dark:hover:text-neutral-100"
