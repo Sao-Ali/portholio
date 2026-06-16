@@ -27,7 +27,7 @@ export async function GET() {
     const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
     <channel>
-        <title>Ali Sao Terminal Portfolio</title>
+        <title>Ali Sao Portfolio & Blog</title>
         <link>${baseUrl}</link>
         <description>Writing from Ali Sao on software, hardware, and projects.</description>
         ${itemsXml}

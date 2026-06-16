@@ -1,11 +1,19 @@
+import BackButton from "@/components/back-button";
+import SiteHeader from "@/components/site-header";
+
 export default function NotFound() {
-    return (
-        <main className="terminal-post">
-            <section className="terminal-post-inner">
-                <p><span className="terminal-user">visitor</span>@<span className="terminal-host">ali-sao.dev</span>:~$ open missing-page</p>
-                <h1 className="mt-8 text-2xl font-semibold tracking-tighter">404 - Page Not Found</h1>
-                <p className="terminal-muted mt-4">command not found: this route does not exist</p>
-            </section>
-        </main>
-    )
+  return (
+    <main className="mx-auto mt-8 max-w-xl px-6 md:px-0">
+      <section>
+        <SiteHeader />
+        <BackButton />
+        <section>
+          <h1 className="text-2xl font-semibold tracking-tighter">
+            404 - Page Not Found
+          </h1>
+          <p className="mt-4 text-gray">This page does not exist.</p>
+        </section>
+      </section>
+    </main>
+  );
 }

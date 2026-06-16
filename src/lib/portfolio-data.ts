@@ -5,6 +5,7 @@ export type Project = {
   desc: string;
   stack: string[];
   url: string;
+  image: string;
 };
 
 export type Social = {
@@ -28,35 +29,57 @@ export type Education = {
 export const projects: Project[] = [
   {
     id: 1,
-    slug: "haskell-habit",
-    title: "Haskell Habit Tracker",
-    desc: "A CLI-first habit tracker built to learn functional programming while owning a lightweight daily workflow.",
-    stack: ["Haskell", "CLI", "Functional Programming"],
-    url: "https://github.com/Sao-Ali/haskell-habit-tracker",
+    slug: "sockets-and-pipes",
+    title: "Sockets and Pipes",
+    desc: "A Haskell systems project building an HTTP server from scratch while learning sockets, Unix I/O, and network protocols.",
+    stack: ["Haskell", "Unix", "Sockets", "HTTP"],
+    url: "https://github.com/Sao-Ali/sockets-and-pipes",
+    image: "/projects/sockets-and-pipes.jpeg",
   },
   {
     id: 2,
+    slug: "haskell-1m-request",
+    title: "Haskell 1M Request",
+    desc: "A Haskell version of the Handling 1 Million Requests project, using Servant with Postgres, Redis, and AWS EC2 deployment work.",
+    stack: ["Haskell", "Postgres", "Redis", "AWS", "EC2", "Servant"],
+    url: "https://github.com/Sao-Ali/haskell-1m-request",
+    image: "/projects/haskell-1m-request.png",
+  },
+  {
+    id: 3,
+    slug: "haskell-dataframe",
+    title: "Haskell DataFrame",
+    desc: "A Haskell data-frame project for exploring typed tabular data, parsing, and data processing workflows.",
+    stack: ["Haskell", "Data Processing", "Typed APIs"],
+    url: "https://github.com/Sao-Ali/haskell-dataframe",
+    image: "/projects/haskell-dataframe.gif",
+  },
+  {
+    id: 4,
     slug: "hft-system",
     title: "HFT-System",
     desc: "A high-frequency trading senior design platform focused on fast UI panels, market data tables, and FPGA-connected workflows.",
     stack: ["React", "TypeScript", "WebSockets", "FPGA"],
     url: "https://github.com/vrushang1234/hft-system",
+    image: "/projects/hft.png",
   },
   {
-    id: 3,
+    id: 5,
     slug: "sana-aligner",
     title: "SANA Neural Network Aligner",
     desc: "Work around SANA, a neural network alignment project for comparing and mapping graph-like model structures.",
     stack: ["Research Software", "Algorithms", "C++"],
     url: "https://github.com/waynebhayes/SANA",
+    image: "/SANA.png",
   },
   {
-    id: 4,
+    id: 6,
     slug: "room-booking",
     title: "Engineering Room Booking System",
     desc: "A booking system for engineering rooms, built as a practical web app for scheduling shared resources.",
     stack: ["Next.js", "TypeScript", "Web App"],
     url: "https://ics-259.vercel.app/",
+    image: "/Project 1.png",
   },
 ];
 

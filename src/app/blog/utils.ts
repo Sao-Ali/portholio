@@ -117,3 +117,11 @@ export function formatDate(dateInput: string, includeRelative = false): string {
 
     return `${full} (${rel})`
 }
+
+export function formatShortDate(dateInput: string): string {
+    const iso = dateInput.includes('T') ? dateInput : `${dateInput}T00:00:00`
+    return new Date(iso).toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+    })
+}
