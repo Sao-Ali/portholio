@@ -18,15 +18,15 @@ type ProjectContribution = {
 };
 
 const contributionDetails: Record<string, ProjectContribution> = {
-  "sockets-and-pipes": {
-    category: "HASKELL SYSTEMS",
-    headline: ["BUILDING AN HTTP", "SERVER FROM", "SCRATCH IN HASKELL."],
-    summary:
-      "Sockets and Pipes is my walk through a Joy of Haskell book project that builds a web server from scratch in Haskell.",
-    description:
-      "The project uses HTTP as the path into systems programming: sockets, Unix I/O, request and response semantics, and pieces of RFC 9110 and RFC 9112. Instead of hiding the protocol behind a framework, I am implementing the lower layers directly to understand what web servers actually do.",
-    visualMode: "contain",
-  },
+  // "sockets-and-pipes": {
+  //   category: "HASKELL SYSTEMS",
+  //   headline: ["BUILDING AN HTTP", "SERVER FROM", "SCRATCH IN HASKELL."],
+  //   summary:
+  //     "Sockets and Pipes is my walk through a Joy of Haskell book project that builds a web server from scratch in Haskell.",
+  //   description:
+  //     "The project uses HTTP as the path into systems programming: sockets, Unix I/O, request and response semantics, and pieces of RFC 9110 and RFC 9112. Instead of hiding the protocol behind a framework, I am implementing the lower layers directly to understand what web servers actually do.",
+  //   visualMode: "contain",
+  // },
   "haskell-1m-request": {
     category: "HASKELL BACKEND",
     headline: ["HANDLING 1 MILLION", "REQUESTS WITH", "HASKELL SERVANT."],

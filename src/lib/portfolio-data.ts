@@ -27,15 +27,15 @@ export type Education = {
 };
 
 export const projects: Project[] = [
-  {
-    id: 1,
-    slug: "sockets-and-pipes",
-    title: "Sockets and Pipes",
-    desc: "A Haskell systems project building an HTTP server from scratch while learning sockets, Unix I/O, and network protocols.",
-    stack: ["Haskell", "Unix", "Sockets", "HTTP"],
-    url: "https://github.com/Sao-Ali/sockets-and-pipes",
-    image: "/projects/sockets-and-pipes.jpeg",
-  },
+  // {
+  //   id: 1,
+  //   slug: "sockets-and-pipes",
+  //   title: "Sockets and Pipes",
+  //   desc: "A Haskell systems project building an HTTP server from scratch while learning sockets, Unix I/O, and network protocols.",
+  //   stack: ["Haskell", "Unix", "Sockets", "HTTP"],
+  //   url: "https://github.com/Sao-Ali/sockets-and-pipes",
+  //   image: "/projects/sockets-and-pipes.jpeg",
+  // },
   {
     id: 2,
     slug: "haskell-1m-request",

@@ -38,13 +38,13 @@ export const nowUpdates: NowUpdate[] = [
           learn as much as I can, and hopefully put myself in a position to
           get a return offer.
         </p>
-        <p>
-          I am also working through a Haskell book/project on sockets and
-          pipes, which has been pulling me deeper into systems programming,
-          networking, sockets, and pipes lol. I can feel myself drifting away
-          from frontend and web dev in general. Not in a dramatic way, but
-          more like I keep finding the lower-level stuff more interesting.
-        </p>
+        {/* <p>
+            I am also working through a Haskell book/project on sockets and
+            pipes, which has been pulling me deeper into systems programming,
+            networking, sockets, and pipes lol. I can feel myself drifting away
+            from frontend and web dev in general. Not in a dramatic way, but
+            more like I keep finding the lower-level stuff more interesting.
+          </p> */}
         <p>Anyways, onwards to the future. Good things are ahead.</p>
       </>
     ),
