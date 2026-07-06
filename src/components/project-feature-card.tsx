@@ -40,6 +40,7 @@ export default function ProjectFeatureCard({
           <Image
             src={thumbnailUrl}
             fill
+            loading={latest ? "eager" : "lazy"}
             sizes="(max-width: 768px) 100vw, 240px"
             unoptimized={isAnimatedThumbnail}
             className={`h-[200px] w-full transform rounded-md transition-transform duration-300 group-hover:scale-[1.04] md:h-[160px] ${

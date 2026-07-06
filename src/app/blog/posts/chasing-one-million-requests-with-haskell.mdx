@@ -1,0 +1,69 @@
+---
+title: "Chasing One Million Requests per Second with Haskell"
+publishedAt: "2026-07-05"
+summary: "Building and benchmarking a Haskell backend with Servant, Autocannon, PostgreSQL, Redis, and AWS EC2."
+image: "/projects/haskell-1m-request.png"
+---
+
+I have been building a Haskell backend with an ambitious goal: handle one million requests per second.
+
+I am not there yet. My latest Autocannon test completed about 143,000 requests in 30 seconds. The more useful result, though, is understanding what limits the server and what I should test next.
+
+## The stack
+
+The API is written in Haskell with Servant, WAI, and Warp.
+
+Servant defines the API in Haskell's type system, so routes, request data, and response types are checked by the compiler. WAI provides the web application interface, and Warp runs the HTTP server.
+
+The project has three main kinds of endpoints:
+
+- a small health route;
+- a larger `PATCH` route that parses JSON and returns 100 history records; and
+- stateful routes backed by PostgreSQL or Redis.
+
+This distinction matters. A tiny health response and a 32 KB JSON response may each count as one request, but they place very different demands on the CPU, memory, and network.
+
+## Testing with Autocannon
+
+I use Autocannon to send concurrent requests and measure throughput, latency, and bandwidth. The latest test used 100 connections against the larger `PATCH` endpoint.
+
+<figure className="my-8 flex flex-col gap-2">
+  <Image
+    src="/haskell-1m-result.png"
+    alt="Autocannon result showing 143,000 requests completed in 30 seconds"
+    width="1919"
+    height="445"
+    className="h-auto w-full rounded-md border border-neutral-200"
+  />
+  <figcaption className="text-center text-sm italic text-neutral-600">
+    143,000 requests in 30 seconds with 100 concurrent connections.
+  </figcaption>
+</figure>
+
+The run averaged about 4,749 requests per second, reached roughly 5,200 requests per second, and had a p99 latency of 44 ms. It also transferred 4.7 GB because each response was much larger than a basic health response.
+
+This was a local test, with the server and Autocannon sharing the same machine. Autocannon also repeated the same payload, allowing the endpoint's small response cache to help. The result is useful as a baseline, but it is not proof that the application will perform the same way with varied traffic or over a real network.
+
+## PostgreSQL and Redis
+
+PostgreSQL is the durable data store. One useful optimization was changing how the API selects a random row. `ORDER BY RANDOM()` is simple, but it becomes expensive as the table grows. Choosing an ID in the application and performing one indexed primary-key lookup removes much of that database work, as long as the IDs are dense.
+
+Redis is the faster path for writes. The API can store a record in Redis and place its ID on a queue for later synchronization to PostgreSQL. That lowers request latency, but it moves durability and failure handling into a background worker.
+
+That worker is not finished yet. Before treating the Redis path as production-ready, I need atomic writes, retries, idempotent PostgreSQL synchronization, and a plan for failed jobs.
+
+## Why AWS EC2 matters
+
+The next serious benchmark should run on AWS EC2 instead of entirely on my laptop. The server and load generator need separate machines so they do not compete for the same CPU and memory.
+
+EC2 also gives me a repeatable environment for comparing instance types, Haskell runtime settings, process counts, PostgreSQL connection pools, and Redis latency. For every test, I want to record the instance type, build flags, connection count, payload, latency, bandwidth, and error rate—not only the largest requests-per-second number.
+
+## What comes next
+
+My next step is to establish a fair EC2 baseline and then compare Haskell backend frameworks. Servant gives me a strongly typed and maintainable API, but I want to test whether a framework such as Yesod behaves differently under the same workload.
+
+The comparison needs to keep the endpoint, payload, database, cache, hardware, and Autocannon settings identical. Otherwise, I would be comparing two different experiments instead of two backend frameworks.
+
+One million requests per second is still the target. For now, the project is giving me something more useful: a clearer understanding of how Haskell, HTTP, PostgreSQL, Redis, and the deployment environment work together under load.
+
+You can follow the code in the [Haskell 1M Request repository](https://github.com/Sao-Ali/haskell-1m-request).
