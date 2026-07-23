@@ -9,6 +9,8 @@ export const metadata = {
 };
 
 export default function NowPage() {
+  const currentUpdate = nowUpdates[0];
+
   return (
     <main className="mx-auto mt-8 max-w-xl px-6 md:px-0">
       <section className="summary">
@@ -25,12 +27,12 @@ export default function NowPage() {
               by <HyperLink href="https://nownownow.com/about">nownownow.com</HyperLink>.
             </i>
           </p>
-          {nowUpdates.map((update) => (
-            <section key={update.slug} id={update.slug} className="scroll-mt-24">
-              <h2 className="mt-8">{formatNowUpdateDate(update.publishedAt)}</h2>
-              {update.content}
-            </section>
-          ))}
+          <section id={currentUpdate.slug} className="scroll-mt-24">
+            <h2 className="mt-8">
+              {formatNowUpdateDate(currentUpdate.publishedAt)}
+            </h2>
+            {currentUpdate.content}
+          </section>
         </div>
       </section>
     </main>

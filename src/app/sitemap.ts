@@ -1,4 +1,5 @@
 import { getBlogPosts } from '@/app/blog/utils'
+import { getNowArchiveEntries } from '@/app/now/updates'
 import { projects } from '@/lib/portfolio-data'
 
 // TODO: replace with the production portfolio domain when it is available.
@@ -8,6 +9,11 @@ export default async function sitemap() {
     const blogs = getBlogPosts().map((post) => ({
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: post.metadata.publishedAt,
+    }))
+
+    const nowArchives = getNowArchiveEntries().map((entry) => ({
+        url: `${baseUrl}${entry.href}`,
+        lastModified: entry.publishedAt,
     }))
 
     const routes = ['', '/about', '/now', '/projects', '/blog'].map((route) => ({
@@ -20,5 +26,5 @@ export default async function sitemap() {
         lastModified: new Date().toISOString().split('T')[0],
     }))
 
-    return [...routes, ...projectRoutes, ...blogs]
+    return [...routes, ...projectRoutes, ...blogs, ...nowArchives]
 }

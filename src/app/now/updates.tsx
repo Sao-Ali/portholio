@@ -10,6 +10,57 @@ export type NowUpdate = {
 
 export const nowUpdates: NowUpdate[] = [
   {
+    slug: "july-23-2026",
+    title: "Now: July 23, 2026",
+    publishedAt: "2026-07-23",
+    summary:
+      "A little over halfway through the Panasonic internship, working with the vRack team, and hoping to learn a lot more Kubernetes.",
+    content: (
+      <>
+        <p>
+          i&apos;m a little over halfway through my internship at Panasonic now.
+        </p>
+        <p>
+          i actually wanted to update this page after my first day, but the
+          first day was so hectic that i could not even think about writing
+          anything here yet. everything moved fast, and for a while the
+          internship felt pretty different from what i expected.
+        </p>
+        <p>
+          there was a lot going on with my manager and team situation at the
+          start. i got placed on a team that was not really a software
+          engineering team, and honestly i was kind of bummed out. part of me
+          just wanted to finish the original project quickly and move on.
+        </p>
+        <p>
+          but i think it worked out. i&apos;m currently working with a different
+          team now, the vRack team, and i really enjoy the people around me.
+          they work with a lot of modern technology that i want to spend the
+          rest of the internship exploring more seriously.
+        </p>
+        <p>
+          their backend is in Go, they use Kubernetes, and they are one of the
+          few teams i have seen that is actually full stack instead of being
+          split into separate frontend, backend, and infrastructure groups. i
+          really like that. it feels like a place where i could learn how the
+          whole system fits together instead of only touching one small part of
+          it.
+        </p>
+        <p>
+          i also think the team has a bright future. the manager seems like a
+          good guy, and the people i work with seem genuinely excited about
+          what they are building. that makes a big difference.
+        </p>
+        <p>
+          for now i&apos;m still finishing up my original internship project, but
+          i&apos;m really hoping to get an extension and eventually a full-time
+          offer with the vRack team. i would love to keep learning more about
+          Kubernetes and keep building with them.
+        </p>
+      </>
+    ),
+  },
+  {
     slug: "june-15-2026",
     title: "Now: June 15, 2026",
     publishedAt: "2026-06-15",
@@ -66,6 +117,6 @@ export function getNowArchiveEntries() {
     title: update.title,
     publishedAt: update.publishedAt,
     summary: update.summary,
-    href: `/now#${update.slug}`,
+    href: `/now/${update.slug}`,
   }));
 }

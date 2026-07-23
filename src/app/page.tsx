@@ -33,9 +33,9 @@ export default function Page() {
             night bug at a time.
           </p>
           <p>
-            i&apos;ll update my <HyperLink href="/now">now</HyperLink> page once
-            in a while when there&apos;s enough life to report. for now, welcome
-            to the blog. make yourself at home.
+            i&apos;ll update my <HyperLink href="/now">now</HyperLink>{" "}
+            page once in a while when there&apos;s enough life to report. for now,
+            welcome to the blog. make yourself at home.
           </p>
           <p>
             welcome, and thank you for visiting my corner of the{" "}
