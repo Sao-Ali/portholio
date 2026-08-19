@@ -10,6 +10,59 @@ export type NowUpdate = {
 
 export const nowUpdates: NowUpdate[] = [
   {
+    slug: "august-18-2026",
+    title: "Now: August 18, 2026",
+    publishedAt: "2026-08-18",
+    summary:
+      "Looking back on a year and a half with the vRack team, wrapping things up, and getting ready for the next thing.",
+    content: (
+      <>
+        <p>
+          it&apos;s kind of crazy that i&apos;ve been with the vRack team for about a
+          year and a half now. i joined last summer, and at the time i mostly
+          just wanted to learn as much as i could and see what working on a
+          real team was like.
+        </p>
+        <p>
+          i got a lot more than that. i&apos;ve been able to work with Kubernetes,
+          Go, MongoDB, and a bunch of other things that felt pretty foreign to
+          me when i first started. i feel like i can actually look at a system
+          now and have a better idea of how all the pieces are supposed to fit
+          together.
+        </p>
+        <p>
+          Kubernetes has probably been the biggest one. there was a moment
+          where i took down our cluster in Mumbai, which was obviously not a
+          great feeling. i remember being pretty stressed about it, but i also
+          learned a lot from having to help build it back up and fix what went
+          wrong. it made Kubernetes feel a lot less abstract after that.
+        </p>
+        <p>
+          i think the bigger thing i&apos;m taking away is the habits i picked up
+          from the team. asking better questions, taking my time before making
+          a change, and not treating something as done just because it works on
+          my machine. there are a lot of small things like that which are easy
+          to miss when you are learning on your own.
+        </p>
+        <p>
+          i&apos;ve also realized that i really want to keep working with this kind
+          of stuff. i like being close to the infrastructure, figuring out why
+          something broke, and getting a better understanding of the systems
+          behind an app. i still have a lot to learn, but now i know where i
+          want to keep going.
+        </p>
+        <p>
+          i know this sounds like a goodbye message, and i guess it kind of
+          is. i just found out that they do not have headcount for a full-time
+          role, so after a year and a half with the team, i&apos;m interviewing and
+          applying elsewhere. it&apos;s a little sad, but i&apos;m grateful for the time
+          i got there. hopefully i can find a place where i can keep working
+          with Kubernetes. back to grinding LeetCode i guess.
+        </p>
+      </>
+    ),
+  },
+  {
     slug: "july-23-2026",
     title: "Now: July 23, 2026",
     publishedAt: "2026-07-23",
