@@ -38,12 +38,12 @@ export const projects: Project[] = [
   // },
   {
     id: 2,
-    slug: "haskell-1m-request",
-    title: "Haskell 1M Request",
-    desc: "A Haskell version of the Handling 1 Million Requests project, using Servant with Postgres, Redis, and AWS EC2 deployment work.",
-    stack: ["Haskell", "Postgres", "Redis", "AWS", "EC2", "Servant"],
-    url: "https://github.com/Sao-Ali/haskell-1m-request",
-    image: "/projects/haskell-1m-request.png",
+    slug: "vetch",
+    title: "Vetch",
+    desc: "An early-stage Kubernetes platform exploring virtual AI inference clusters, accelerator-aware scheduling, and workload routing.",
+    stack: ["Go", "Kubernetes", "Kubebuilder", "KubeVirt"],
+    url: "https://github.com/Sao-Ali/vetch",
+    image: "/projects/vetch-wip.png",
   },
   {
     id: 3,
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     title: "SANA Neural Network Aligner",
     desc: "Work around SANA, a neural network alignment project for comparing and mapping graph-like model structures.",
     stack: ["Research Software", "Algorithms", "C++"],
-    url: "https://github.com/waynebhayes/SANA",
+    url: "https://hayeslab.ics.uci.edu/tools",
     image: "/SANA.png",
   },
   {

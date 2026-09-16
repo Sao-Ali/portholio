@@ -63,8 +63,11 @@ export default function Page() {
           />
         </div>
 
-        <h2>check out my projects</h2>
-        <div className="grid grid-cols-1 gap-4 pt-4">
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="mb-0">selected projects</h2>
+          <HyperLink href="/projects">view all</HyperLink>
+        </div>
+        <div className="pt-4">
           {projects.map((project, index) => (
             <ProjectFeatureCard
               key={project.slug}

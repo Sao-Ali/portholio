@@ -9,18 +9,6 @@ type ProjectFeatureCardProps = {
   latest?: boolean;
 };
 
-function Arrow() {
-  return (
-    <Image
-      src="/read-me-arrow.svg"
-      width={27}
-      height={14}
-      alt=""
-      aria-hidden="true"
-    />
-  );
-}
-
 function isAnimatedImage(src: string) {
   return src.toLowerCase().endsWith(".gif");
 }
@@ -34,34 +22,69 @@ export default function ProjectFeatureCard({
 }: ProjectFeatureCardProps) {
   const isExternal = href.startsWith("http");
   const isAnimatedThumbnail = isAnimatedImage(thumbnailUrl);
-  const card = (
-      <div className="hover:bg-green-faded-xl group flex flex-col gap-3 rounded-md border-2 border-green-faded bg-off-white p-2 hover:border-green md:flex-row">
-        <div className="relative h-[200px] w-full overflow-hidden rounded-md bg-green-faded-xl md:h-[160px] md:w-[240px]">
+  const imageClass = isAnimatedThumbnail
+    ? "object-contain p-2"
+    : "object-cover";
+
+  if (latest) {
+    const featuredCard = (
+      <article className="group overflow-hidden rounded-lg border border-green-faded bg-off-white transition-colors hover:border-green hover:bg-green-faded-xl">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-green-faded-xl">
           <Image
             src={thumbnailUrl}
             fill
-            loading={latest ? "eager" : "lazy"}
-            sizes="(max-width: 768px) 100vw, 240px"
+            priority
+            sizes="(max-width: 640px) 100vw, 576px"
             unoptimized={isAnimatedThumbnail}
-            className={`h-[200px] w-full transform rounded-md transition-transform duration-300 group-hover:scale-[1.04] md:h-[160px] ${
-              isAnimatedThumbnail ? "object-contain p-2" : "object-cover"
-            }`}
+            className={`transition-transform duration-500 group-hover:scale-[1.02] ${imageClass}`}
+            alt={`${title} thumbnail`}
+          />
+          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-neutral-700 backdrop-blur-sm">
+            Work in progress
+          </span>
+        </div>
+        <div className="flex items-start justify-between gap-6 p-4">
+          <div>
+            <h3>{title}</h3>
+            <p className="mt-1 text-gray">{description}</p>
+          </div>
+          <span className="mt-1 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true">
+            &rarr;
+          </span>
+        </div>
+      </article>
+    );
+
+    return isExternal ? (
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        {featuredCard}
+      </a>
+    ) : (
+      <Link href={href}>{featuredCard}</Link>
+    );
+  }
+
+  const card = (
+      <article className="group flex items-center gap-4 border-b border-neutral-200 py-4">
+        <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-md bg-green-faded-xl sm:h-24 sm:w-36">
+          <Image
+            src={thumbnailUrl}
+            fill
+            loading="lazy"
+            sizes="(max-width: 640px) 112px, 144px"
+            unoptimized={isAnimatedThumbnail}
+            className={`transition-transform duration-300 group-hover:scale-[1.03] ${imageClass}`}
             alt={`${title} thumbnail`}
           />
         </div>
-        <div className="relative flex flex-1 flex-col justify-between">
-          <div className="flex flex-col gap-2">
-            <h3 className="relative">
-              <strong>{title} </strong>
-              {latest && <span className="text-red text-[14px]">(NEW)</span>}
-            </h3>
-            <p className="text-gray">{description}</p>
-          </div>
-          <div className="absolute bottom-0 right-0 opacity-0 transition-opacity group-hover:opacity-100">
-            <Arrow />
-          </div>
+        <div className="min-w-0 flex-1">
+          <h3>{title}</h3>
+          <p className="mt-1 line-clamp-2 text-sm leading-5 text-gray">{description}</p>
         </div>
-      </div>
+        <span className="shrink-0 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" aria-hidden="true">
+          &rarr;
+        </span>
+      </article>
   );
 
   if (isExternal) {

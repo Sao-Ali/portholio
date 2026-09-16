@@ -27,14 +27,13 @@ const contributionDetails: Record<string, ProjectContribution> = {
   //     "The project uses HTTP as the path into systems programming: sockets, Unix I/O, request and response semantics, and pieces of RFC 9110 and RFC 9112. Instead of hiding the protocol behind a framework, I am implementing the lower layers directly to understand what web servers actually do.",
   //   visualMode: "contain",
   // },
-  "haskell-1m-request": {
-    category: "HASKELL BACKEND",
-    headline: ["HANDLING 1 MILLION", "REQUESTS WITH", "HASKELL SERVANT."],
+  vetch: {
+    category: "AI INFRASTRUCTURE · WORK IN PROGRESS",
+    headline: ["VIRTUALIZING AI", "INFERENCE AND", "ROUTING."],
     summary:
-      "Haskell 1M Request is my Haskell version of the Handling 1 Million Requests project, rebuilt around Servant instead of the Node.js examples.",
+      "Vetch is an early-stage platform for describing and operating virtual AI inference clusters through Kubernetes.",
     description:
-      "The project connects a Haskell API to Postgres and Redis, then explores how the service behaves when deployed and tuned on AWS EC2. It is focused on understanding the backend pieces behind high-throughput request handling: app runtime, database access, cache behavior, deployment environment, and server design.",
-    visualMode: "contain",
+      "The idea is to give AI workloads a software-defined pool of inference capacity: Kubernetes custom resources declare the desired cluster, a controller reconciles that state, and future milestones add KubeVirt-backed nodes, software-visible accelerator profiles, scheduling, and routing across CPU-backed inference workers. The current first milestone establishes the API and controller loop; it does not run inference or emulate GPU performance yet.",
   },
   "haskell-dataframe": {
     category: "DATA INFRASTRUCTURE",
