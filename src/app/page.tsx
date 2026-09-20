@@ -83,7 +83,7 @@ export default function Page() {
         <Divider />
 
         <h2>everything i&apos;ve written so far</h2>
-        <BlogPostList includeNowUpdates />
+        <BlogPostList includeNowUpdates showNewestBadge />
       </section>
     </main>
   );

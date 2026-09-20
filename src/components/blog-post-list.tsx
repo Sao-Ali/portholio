@@ -10,9 +10,13 @@ type WritingEntry = {
 
 type BlogPostListProps = {
   includeNowUpdates?: boolean;
+  showNewestBadge?: boolean;
 };
 
-export function BlogPostList({ includeNowUpdates = false }: BlogPostListProps) {
+export function BlogPostList({
+  includeNowUpdates = false,
+  showNewestBadge = false,
+}: BlogPostListProps) {
   const blogEntries: WritingEntry[] = getBlogPosts().map((post) => ({
     title: post.metadata.title,
     publishedAt: post.metadata.publishedAt,
@@ -24,19 +28,31 @@ export function BlogPostList({ includeNowUpdates = false }: BlogPostListProps) {
     : [];
 
   const allEntries = [...blogEntries, ...nowEntries];
-  const entriesByYear = allEntries.reduce<Record<string, WritingEntry[]>>((acc, entry) => {
-    const year = new Date(entry.publishedAt).getFullYear().toString();
-    acc[year] = acc[year] ?? [];
-    acc[year].push(entry);
-    return acc;
-  }, {});
+  const newestBlogEntry = blogEntries.reduce<WritingEntry | undefined>(
+    (newest, entry) =>
+      !newest ||
+        new Date(entry.publishedAt).getTime() >
+          new Date(newest.publishedAt).getTime()
+        ? entry
+        : newest,
+    undefined
+  );
+  const entriesByYear = allEntries.reduce<Record<string, WritingEntry[]>>(
+    (acc, entry) => {
+      const year = new Date(entry.publishedAt).getFullYear().toString();
+      acc[year] = acc[year] ?? [];
+      acc[year].push(entry);
+      return acc;
+    },
+    {}
+  );
   const sortedYears = Object.keys(entriesByYear).sort(
     (a, b) => Number(b) - Number(a)
   );
 
   return (
     <div>
-      {sortedYears.map(year => (
+      {sortedYears.map((year) => (
         <div key={year}>
           <h3 className="mb-4 mt-8 text-2xl font-bold">{year}</h3>
           {entriesByYear[year]
@@ -45,7 +61,7 @@ export function BlogPostList({ includeNowUpdates = false }: BlogPostListProps) {
                 new Date(b.publishedAt).getTime() -
                 new Date(a.publishedAt).getTime()
             )
-            .map(entry => (
+            .map((entry) => (
               <div key={entry.href} className="flex w-full pb-2">
                 <p className="mr-4 w-[60px] tabular-nums text-neutral-600">
                   {formatShortDate(entry.publishedAt)}
@@ -54,10 +70,15 @@ export function BlogPostList({ includeNowUpdates = false }: BlogPostListProps) {
                   <HyperLink href={entry.href}>
                     {entry.title}
                   </HyperLink>
+                  {showNewestBadge && entry.href === newestBlogEntry?.href && (
+                    <span className="ml-2 text-xs font-semibold text-red">
+                      new!
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
-            </div>
+        </div>
       ))}
     </div>
   );

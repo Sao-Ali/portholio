@@ -1,0 +1,134 @@
+---
+title: "Building Vetch"
+publishedAt: "2026-09-20"
+summary: "Building a small inference infrastructure project with Kubernetes, KubeVirt, and virtual accelerator resources."
+---
+
+I have a new project, and the completely reasonable goal is to beat Groq at inference.
+
+That is obviously not going to happen.
+
+[Groq](https://groq.com/) builds custom inference hardware and a cloud platform around running models fast. I am a college student with Kubernetes, some AWS credits, and an unhealthy interest in infrastructure.
+
+But I like the goal because it gives me something concrete to chase.
+
+The project is called **Vetch**. The idea is to create virtual inference infrastructure, deploy a model onto it, and experiment with how accelerator count, memory, compute capacity, and networking affect inference.
+
+The part I care about most is not building another AI application. I want to build some of the infrastructure underneath one.
+
+## So what is inference?
+
+I spent enough time reading about inference companies before realizing I should probably be able to explain inference without turning it into a paragraph full of AI words.
+
+Training is where a model learns. Inference is when you actually use the trained model.
+
+You send a prompt to a model, the model runs a bunch of computation, and eventually you get tokens back. When a lot of people do that at once, running those models quickly and cheaply becomes an infrastructure problem.
+
+There is the accelerator hardware, but there is also scheduling, networking, memory, model placement, resource allocation, observability, and deployment. A lot of software has to decide where everything should run.
+
+That second part is where Vetch gets interesting to me.
+
+## Why virtualize it?
+
+I got into [KubeVirt](https://kubevirt.io/) through my work on virtual rack infrastructure. Kubernetes normally schedules Pods onto machines. KubeVirt extends Kubernetes so virtual machines can be managed through the same kind of declarative resources and controllers.
+
+That combination immediately clicked with me. You get the patterns I already like about Kubernetes—desired state, controllers, scheduling, and reconciliation—but now you can represent something closer to a complete machine.
+
+Naturally, my next thought was: what other hardware could I represent this way?
+
+Inference accelerators seemed like a fun answer.
+
+Vetch is not recreating a Groq LPU or an NVIDIA GPU inside my laptop. The first version is much simpler: it represents accelerator-like resources in software and lets the system manage them. That is an abstraction, not hardware virtualization, and I want to keep that distinction clear.
+
+The shape I am working toward looks something like this:
+
+```text
+vetch create-cluster
+        |
+        v
+    Vetch API
+        |
+        v
+ Kubernetes Operator
+        |
+        v
+ KubeVirt VMs
+        |
+        v
+Virtual Accelerators
+        |
+        v
+   Model Inference
+```
+
+From the CLI, I want to describe the environment I need. Maybe one accelerator has a certain amount of memory and compute capacity. Maybe another cluster has four accelerators. Maybe the bandwidth between them is limited.
+
+The operator then has to turn that desired state into running infrastructure. That is the part I keep wanting to work on.
+
+## Mostly, I want an excuse to do weird Kubernetes things
+
+This is probably the real reason the project exists.
+
+I like infrastructure projects where Kubernetes has to manage a slightly strange resource. A normal tutorial usually ends somewhere around creating a Deployment and a Service. Useful, but there is a lot more interesting stuff hiding underneath that.
+
+With Vetch, I get an excuse to work with custom resources, operators, scheduling, KubeVirt, networking, observability, and eventually EKS.
+
+Instead of telling Kubernetes:
+
+```text
+run three copies of my web server
+```
+
+I want to eventually tell it something closer to:
+
+```text
+give this inference cluster four virtual accelerators,
+each with these resource limits,
+and run this model across them
+```
+
+Then I have to build the machinery that makes that sentence mean something. That sounds much more fun.
+
+The CLI is being built with Go and Cobra, and there will probably be a small Go API somewhere in the system. The final version should run on AWS with EC2 and EKS, but I am deliberately starting locally because paying AWS to debug YAML would be a pretty bad hobby.
+
+There is also a tiny open-source model at the end of the system. When Vetch runs inference, I want it to be actual model inference. The accelerator layer may be an abstraction, but the model should still load, execute, and return real output.
+
+Otherwise, I am mostly building a very elaborate diagram.
+
+## About beating Groq
+
+Groq is a useful example of what happens when inference becomes the system rather than just an API call. Its custom LPU hardware and cloud platform handle the work underneath a model request.
+
+The funny benchmark for Vetch is eventually going to be putting the two next to each other. I do not expect a Kubernetes cluster to defeat custom inference silicon. That would be a concerning result for Groq.
+
+The comparison gives me better questions to ask:
+
+- How much throughput can Vetch actually produce?
+- Where does its latency come from?
+- What changes when I add more virtual accelerators?
+- Does distributing the work help, or does it add networking overhead?
+- How much infrastructure does it take to serve a tiny model reliably?
+- When does the abstraction stop resembling the hardware it represents?
+
+Those questions are more interesting to me than making one benchmark number look impressive. If the final graph says Groq absolutely destroys Vetch, that is probably the expected graph. I still want to understand why.
+
+## There is a lot I do not know yet
+
+The project is still early. The accelerator abstraction will change, the scheduling model is not finished, and I still need to find the useful boundary between real behavior and simulation for multi-accelerator inference.
+
+There is also a big difference between representing hardware resources in software and virtualizing a physical inference accelerator. Figuring out where that boundary sits is basically the project.
+
+For now, I am working from the bottom up: defining the Kubernetes resources, getting the operator working, creating the VM infrastructure, and slowly connecting those pieces to actual inference.
+
+Eventually, I want this:
+
+```bash
+vetch create-cluster
+vetch deploy tiny-model
+```
+
+Then I can start breaking it. Change the accelerator count. Restrict memory. Mess with bandwidth. Watch the scheduler. Measure latency. Move it onto EKS. Compare configurations.
+
+And eventually, put a tiny Vetch benchmark next to Groq and see just how unfair the comparison is.
+
+That seems like a good place to start.
