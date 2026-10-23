@@ -68,14 +68,13 @@ export default function Page() {
           <HyperLink href="/projects">view all</HyperLink>
         </div>
         <div className="pt-4">
-          {projects.map((project, index) => (
+          {projects.map(project => (
             <ProjectFeatureCard
               key={project.slug}
               href={`/projects#${project.slug}`}
               title={project.title}
               description={project.desc}
               thumbnailUrl={project.image}
-              latest={index === 0}
             />
           ))}
         </div>

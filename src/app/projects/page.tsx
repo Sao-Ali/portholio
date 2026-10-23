@@ -9,186 +9,113 @@ export const metadata = {
   description: "Selected projects by Ali Sao.",
 };
 
-type ProjectContribution = {
-  category: string;
-  headline: string[];
-  summary: string;
-  description: string;
-  visualMode?: "cover" | "contain";
-};
-
-const contributionDetails: Record<string, ProjectContribution> = {
-  // "sockets-and-pipes": {
-  //   category: "HASKELL SYSTEMS",
-  //   headline: ["BUILDING AN HTTP", "SERVER FROM", "SCRATCH IN HASKELL."],
-  //   summary:
-  //     "Sockets and Pipes is my walk through a Joy of Haskell book project that builds a web server from scratch in Haskell.",
-  //   description:
-  //     "The project uses HTTP as the path into systems programming: sockets, Unix I/O, request and response semantics, and pieces of RFC 9110 and RFC 9112. Instead of hiding the protocol behind a framework, I am implementing the lower layers directly to understand what web servers actually do.",
-  //   visualMode: "contain",
-  // },
+const projectDetails: Record<string, { category: string; impact: string }> = {
   vetch: {
-    category: "AI INFRASTRUCTURE · WORK IN PROGRESS",
-    headline: ["VIRTUALIZING AI", "INFERENCE AND", "ROUTING."],
-    summary:
-      "Vetch is an early-stage platform for describing and operating virtual AI inference clusters through Kubernetes.",
-    description:
-      "The idea is to give AI workloads a software-defined pool of inference capacity: Kubernetes custom resources declare the desired cluster, a controller reconciles that state, and future milestones add KubeVirt-backed nodes, software-visible accelerator profiles, scheduling, and routing across CPU-backed inference workers. The current first milestone establishes the API and controller loop; it does not run inference or emulate GPU performance yet.",
+    category: "AI INFRASTRUCTURE",
+    impact:
+      "I build the Kubernetes and KubeVirt provisioning layer. The proposal maps out CPU-backed inference on AWS, then whole-request routing to a Qualcomm-based edge device, with latency and resource use measured across both.",
   },
   "haskell-dataframe": {
     category: "DATA INFRASTRUCTURE",
-    headline: ["DESIGNING TYPED", "DATAFRAME WORKFLOWS", "IN HASKELL."],
-    summary:
-      "Haskell DataFrame is a typed data-processing library experiment for parsing, shaping, and working with tabular data safely.",
-    description:
-      "The project explores schema design, API ergonomics, parsing, and type-level guarantees. It turns messy data workflows into a smaller, more reliable Haskell interface.",
-    visualMode: "contain",
-  },
-  "hft-system": {
-    category: "TRADING SYSTEMS",
-    headline: ["BUILDING REAL-TIME", "TRADING INTERFACES", "FOR HFT WORKFLOWS."],
-    summary:
-      "HFT-System is a real-time trading platform prototype connecting market data, order entry, fills, and FPGA-driven workflows.",
-    description:
-      "I focused on frontend structure, websocket data paths, and dense UI states that make fast-changing trading information readable during rapid system events.",
+    impact:
+      "A typed Haskell library exploring safer parsing, shaping, and processing of tabular data.",
   },
   "sana-aligner": {
     category: "RESEARCH SOFTWARE",
-    headline: ["ALIGNING NETWORKS", "WITH SANA GRAPH", "ALGORITHMS."],
-    summary:
-      "SANA is a research software project for aligning graph-like structures and comparing complex network representations.",
-    description:
-      "The work centers on understanding algorithms, navigating a larger C++ codebase, and contributing to tooling that supports repeatable research workflows.",
+    impact:
+      "The Hayes Lab website brings network alignment tools and research resources together for more than 200 researchers nationwide, making methods such as SANA easier to find and use.",
   },
   "room-booking": {
-    category: "EDUCATION TECHNOLOGY",
-    headline: ["SIMPLIFYING SHARED", "ENGINEERING ROOM", "RESERVATIONS."],
-    summary:
-      "The Engineering Room Booking System is a scheduling web app for reserving shared engineering rooms and reducing coordination overhead.",
-    description:
-      "The app uses a clear booking flow, predictable resource states, and simple interactions to make availability easier to understand for students and staff.",
+    category: "CAMPUS TOOLS",
+    impact:
+      "Used by the engineering student body, this booking app helps more than 500 users check room availability and reserve shared space without back-and-forth coordination.",
   },
 };
 
-function isAnimatedImage(src: string) {
-  return src.toLowerCase().endsWith(".gif");
-}
-
-function PortfolioDivider() {
-  return (
-    <div className="portfolio-divider" aria-hidden="true">
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    </div>
-  );
-}
-
-function ProjectCaseStudy({ project }: { project: Project }) {
-  const detail = contributionDetails[project.slug];
-  const isAnimatedProjectImage = isAnimatedImage(project.image);
-  const imageClass =
-    isAnimatedProjectImage || detail.visualMode === "contain"
-      ? "object-contain p-12 sm:p-16"
-      : "object-cover";
+function ProjectEntry({ project }: { project: Project }) {
+  const detail = projectDetails[project.slug];
+  const isAnimated = project.image.endsWith(".gif");
 
   return (
-    <section id={project.slug} className="scroll-mt-10 py-14 md:py-20">
-      <div className="grid gap-8 md:grid-cols-[0.38fr_0.62fr] md:gap-14">
+    <article id={project.slug} className="scroll-mt-8 border-b border-neutral-200 py-8">
+      <div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:gap-7">
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative block aspect-[16/10] overflow-hidden rounded-md border border-neutral-200 bg-green-faded-xl sm:aspect-[4/3]"
+          aria-label={`View ${project.title}`}
+        >
+          <Image
+            src={project.image}
+            fill
+            sizes="(max-width: 640px) 100vw, 180px"
+            unoptimized={isAnimated}
+            alt={`${project.title} preview`}
+            className={isAnimated ? "object-contain p-3" : "object-cover"}
+          />
+        </a>
+
         <div>
-          <p className="mb-5 text-xs font-bold uppercase text-gray">
+          <p className="text-xs font-bold uppercase tracking-widest text-gray">
             {detail.category}
           </p>
-          <h2 className="font-sans text-4xl font-bold leading-[0.98] text-neutral-950 md:text-5xl">
-            {detail.headline.map(line => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
+          <h2 className="mt-2 text-2xl font-bold text-neutral-950">
+            {project.title}
           </h2>
-        </div>
-
-        <div className="pt-1">
-          <p className="text-lg font-semibold leading-7 text-neutral-950">
-            {detail.summary}
+          <p className="mt-3 text-sm leading-6 text-neutral-700">
+            {detail.impact}
           </p>
-          <p className="mt-5 text-base leading-7 text-neutral-700">
-            {detail.description}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray">
-            {project.stack.map(item => (
-              <span key={item}>{item}</span>
-            ))}
+          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray">
+            {project.stack.map(item => <span key={item}>{item}</span>)}
           </div>
-          <div className="mt-6">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
             <HyperLink href={project.url}>View project</HyperLink>
+            {project.slug === "vetch" && (
+              <HyperLink href="/projects/Vetch-Update.pdf">
+                Open proposal PDF
+              </HyperLink>
+            )}
           </div>
         </div>
       </div>
 
-      <a href={project.url} target="_blank" rel="noopener noreferrer">
-        <div className="mx-auto mt-12 w-full max-w-[90%] overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
-          <div className="relative aspect-[16/10] bg-green-faded-xl">
-            <Image
-              src={project.image}
-              fill
-              sizes="(max-width: 768px) 90vw, 900px"
-              alt={`${project.title} screenshot`}
-              unoptimized={isAnimatedProjectImage}
-              className={imageClass}
+      {project.slug === "vetch" && (
+        <details className="mt-5 rounded-md border border-neutral-200 bg-off-white">
+          <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-neutral-800">
+            Read the Vetch proposal here
+          </summary>
+          <div className="border-t border-neutral-200 p-3">
+            <iframe
+              src="/projects/Vetch-Update.pdf#view=FitH"
+              title="Vetch senior design proposal PDF"
+              loading="lazy"
+              className="h-[520px] w-full rounded-sm bg-white sm:h-[680px]"
             />
+            <p className="mt-2 text-xs text-gray">
+              If the preview does not load, <HyperLink href="/projects/Vetch-Update.pdf">open the PDF</HyperLink>.
+            </p>
           </div>
-        </div>
-      </a>
-
-      <PortfolioDivider />
-    </section>
+        </details>
+      )}
+    </article>
   );
 }
 
 export default function ProjectsPage() {
   return (
-    <main className="mx-auto mt-8 max-w-5xl px-6 md:px-10">
-      <section>
-        <SiteHeader />
-        <BackButton />
-
-        <section className="summary mx-auto max-w-xl">
-          <p>
-            Hi! I&apos;m <strong>Ali</strong>, a computer engineering student
-            based in Orange County.
-          </p>
-          <p>
-            I currently work at Panasonic Avionics as a software integration
-            intern.
-          </p>
-          <p>
-            I&apos;d consider myself a systems-minded builder in some sense -
-            here&apos;s some of my work.
-          </p>
-          <p>
-            I&apos;m interested in Haskell, systems programming,
-            hardware/software integration, and building tools that help people
-            understand complex systems. Please reach out if you&apos;d like to
-            chat!
-          </p>
-          <p>
-            <HyperLink href="https://www.linkedin.com/in/ali-sao/">
-              LinkedIn
-            </HyperLink>{" "}
-            / <HyperLink href="https://github.com/sao-ali">GitHub</HyperLink> /{" "}
-            <HyperLink href="/blog">Blog</HyperLink>
-          </p>
-        </section>
-
-        <h1 className="title mt-16 text-center text-2xl font-semibold tracking-tighter">
-          ~ notable contributions on the INTERNET ~
-        </h1>
-
-        <div>
-          {projects.map(project => (
-            <ProjectCaseStudy key={project.slug} project={project} />
-          ))}
-        </div>
-      </section>
+    <main className="mx-auto mt-8 max-w-3xl px-6 pb-16">
+      <SiteHeader />
+      <BackButton />
+      <h1 className="title mt-10 text-3xl font-semibold tracking-tight">
+        selected projects
+      </h1>
+      <p className="mt-2 text-neutral-700">
+        Infrastructure, research tools, and practical software for people who use them.
+      </p>
+      <div className="mt-8 border-t border-neutral-200">
+        {projects.map(project => <ProjectEntry key={project.slug} project={project} />)}
+      </div>
     </main>
   );
 }

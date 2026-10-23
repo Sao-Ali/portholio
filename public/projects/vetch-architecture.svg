@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">Vetch cloud and edge inference architecture</title>
+  <desc id="desc">A request flows through Vetch to cloud Kubernetes virtual machines or a Qualcomm edge device, then returns measurements.</desc>
+  <rect width="960" height="600" fill="#f8f2ee"/>
+  <path d="M0 85h960M0 515h960" stroke="#e7d8ce" stroke-width="2"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#382e29">
+    <text x="62" y="66" font-size="27" font-weight="700" letter-spacing="3">VETCH</text>
+    <text x="898" y="62" text-anchor="end" font-size="15" letter-spacing="2" fill="#8c6c5d">CLOUD / EDGE INFERENCE</text>
+  </g>
+
+  <g fill="none" stroke="#b87f65" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M224 297h64"/>
+    <path d="m275 285 13 12-13 12"/>
+    <path d="M520 297h63"/>
+    <path d="m570 285 13 12-13 12"/>
+    <path d="M746 267h8v-83h8"/>
+    <path d="m750 172 12 12-12 12"/>
+    <path d="M746 327h8v83h8"/>
+    <path d="m750 398 12 12-12 12"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="64" y="236" width="160" height="122" rx="15" fill="#fff" stroke="#d8b8a6" stroke-width="2"/>
+    <circle cx="144" cy="269" r="10" fill="#b87f65"/>
+    <text x="144" y="307" text-anchor="middle" fill="#382e29" font-size="22" font-weight="700">Request</text>
+    <text x="144" y="331" text-anchor="middle" fill="#876f61" font-size="15">model + budget</text>
+
+    <rect x="288" y="208" width="232" height="178" rx="18" fill="#3d302b"/>
+    <text x="404" y="254" text-anchor="middle" fill="#f7e7dc" font-size="16" letter-spacing="2">KUBERNETES</text>
+    <text x="404" y="300" text-anchor="middle" fill="#fff" font-size="30" font-weight="700">Vetch operator</text>
+    <text x="404" y="331" text-anchor="middle" fill="#e8c8b4" font-size="16">provision · observe · route</text>
+
+    <rect x="584" y="236" width="162" height="122" rx="15" fill="#fff" stroke="#d8b8a6" stroke-width="2"/>
+    <text x="665" y="286" text-anchor="middle" fill="#382e29" font-size="23" font-weight="700">Inference</text>
+    <text x="665" y="317" text-anchor="middle" fill="#876f61" font-size="16">choose backend</text>
+
+    <rect x="762" y="119" width="142" height="130" rx="15" fill="#e9d2c2" stroke="#c6977f" stroke-width="2"/>
+    <text x="833" y="156" text-anchor="middle" fill="#644735" font-size="16" font-weight="700">CLOUD</text>
+    <text x="833" y="185" text-anchor="middle" fill="#382e29" font-size="21" font-weight="700">AWS / EKS</text>
+    <text x="833" y="211" text-anchor="middle" fill="#644735" font-size="15">KubeVirt VM</text>
+
+    <rect x="762" y="345" width="142" height="130" rx="15" fill="#e9d2c2" stroke="#c6977f" stroke-width="2"/>
+    <text x="833" y="382" text-anchor="middle" fill="#644735" font-size="16" font-weight="700">EDGE</text>
+    <text x="833" y="411" text-anchor="middle" fill="#382e29" font-size="21" font-weight="700">Qualcomm</text>
+    <text x="833" y="437" text-anchor="middle" fill="#644735" font-size="15">VENTUNO Q</text>
+  </g>
+
+  <text x="64" y="554" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#8c6c5d" letter-spacing="1">
+    ARCHITECTURE FROM THE SENIOR DESIGN PROPOSAL
+  </text>
+</svg>
